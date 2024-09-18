@@ -23,7 +23,7 @@ const createJob = asyncHandler(async (req, res) => {
     const category = await Category.findOne({ id_cat }).exec();
 
     if (!category) {
-        res.status(400).json({ message: "Ha ocurrido un error al buscar la categoria" });
+        return res.status(400).json({ message: "No se han encontrado categorias y no se ha creado el registro job" });
     }
 
     const nuevoTrabajo = await new Job(JobData);
