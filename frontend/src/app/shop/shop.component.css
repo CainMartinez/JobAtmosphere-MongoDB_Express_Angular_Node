@@ -1,0 +1,12 @@
+.shop-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 63vh;
+    background-color: #f0f0f0;
+}
+
+.shop-container h1 {
+    font-size: 48px;
+    color: #333;
+}
