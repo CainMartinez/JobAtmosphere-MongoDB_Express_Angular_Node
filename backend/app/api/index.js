@@ -8,12 +8,13 @@ const app = express();
 dotenv.config();
 
 // Habilita CORS para todas las rutas
-const corsOptions = {
-   origin: process.env.CORSURL,
-   optionsSuccessStatus: 200
-};
+// const corsOptions = {
+//    origin: process.env.CORSURL,
+//    optionsSuccessStatus: 200
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors("htpp://localhost/4200"));
 
 
 // parse application/x-www-form-urlencoded
