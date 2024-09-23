@@ -5,6 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ListCategoriesComponent } from '../shared/list-categories/list-categories.component';
 import { CardCategoryComponent } from '../shared/card-category/card-category.component';
+import { ListJobsComponent } from '../shared/list-jobs/list-jobs.component';
+import { CardJobComponent } from '../shared/card-job/card-job.component';
+
 
 @NgModule({
     imports: [
@@ -16,13 +19,17 @@ import { CardCategoryComponent } from '../shared/card-category/card-category.com
     ],
     declarations:[
         ListCategoriesComponent,
-        CardCategoryComponent
+        CardCategoryComponent,
+        ListJobsComponent,
+        CardJobComponent
     ],
     exports: [
         FormsModule,
         ReactiveFormsModule,
         ListCategoriesComponent,
-        CardCategoryComponent
+        CardCategoryComponent,
+        ListJobsComponent,
+        CardJobComponent
     ],
 })
 export class SharedModule { }

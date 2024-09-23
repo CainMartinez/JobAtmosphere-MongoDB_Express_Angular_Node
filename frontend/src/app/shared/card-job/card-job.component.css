@@ -1,0 +1,7 @@
+.card {
+  max-width: 300px; /* Ajusta este valor según tus necesidades */
+  margin: 0 auto; /* Centra la tarjeta horizontalmente */
+}
+.justify-text {
+  text-align: justify;
+}
