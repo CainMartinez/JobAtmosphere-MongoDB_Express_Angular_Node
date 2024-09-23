@@ -27,25 +27,25 @@ export class ListJobsComponent implements OnInit {
     this.slug_Category = this.activatedRoute.snapshot.paramMap.get('slug');
     
     if (this.slug_Category) {
-      this.getJobsByCategory();
+      this.get_products_by_cat();
     } else {
       this.getAllJobs();
     }
   }
-  getJobsByCategory(): void {
-    if (this.slug_Category) {
-      this.jobService.getJobsByCategory(this.slug_Category).subscribe(
-        (jobs: Job[]) => {
-          console.log('API response:', jobs);
-          if (jobs && jobs.length > 0) {
-            this.jobs = jobs;
-            console.log(this.jobs);
+  get_products_by_cat(): void {
+    if (this.slug_Category !== null) {
+      this.jobService.getProductsByCategory(this.slug_Category).subscribe(
+        (data: any) => {
+          console.log('API response:', data); // Verifica la respuesta completa de la API
+          if (data && data.jobs) {
+            this.jobs = data.jobs;
+            console.log('Jobs:', this.jobs); // Verifica los trabajos recibidos
           } else {
             console.error('No jobs found in the response');
           }
         },
         (error: any) => {
-          console.error('Error fetching jobs by category:', error);
+          console.error('Error fetching products by category:', error);
         }
       );
     }

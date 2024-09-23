@@ -43,10 +43,9 @@ export class JobService {
     //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
     // }
 
-    getJobsByCategory(slug: String): Observable<Job[]> {
-        return this.http.get<Job[]>(`${this.apiUrl}/categories/${slug}`);
+    getProductsByCategory(slug: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/categories/${slug}/jobs`);
     }
-    
     //SEARCH
     // find_job_name(search: string): Observable<any> {
     //     return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
