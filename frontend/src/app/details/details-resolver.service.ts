@@ -11,7 +11,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class DetailsResolver implements Resolve<Job> {
     constructor(
-        private productService: JobService,
+        private JobService: JobService,
         private router: Router
     ) {}
 
@@ -19,7 +19,7 @@ export class DetailsResolver implements Resolve<Job> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<any> {
-        return this.productService.get_job(route.params['slug'])
+        return this.JobService.get_job(route.params['slug'])
         .pipe(catchError((err) => this.router.navigateByUrl('/')));
     }
 }
