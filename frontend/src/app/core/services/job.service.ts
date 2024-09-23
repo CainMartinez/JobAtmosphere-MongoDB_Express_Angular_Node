@@ -24,35 +24,35 @@ export class JobService {
     }
 
     //CREATE
-    create_job(job: Job): Observable<Job[]> {
-        return this.http.post<Job[]>(`${this.apiUrl}/jobs`, job);
-    }
+    // create_job(job: Job): Observable<Job[]> {
+    //     return this.http.post<Job[]>(`${this.apiUrl}/jobs`, job);
+    // }
 
     //UPDATE ONE
-    update_job(job: Job, slug: String): Observable<Job[]> {
-        return this.http.put<Job[]>(`${this.apiUrl}/jobs/${slug}`, job);
-    }
+    // update_job(job: Job, slug: String): Observable<Job[]> {
+    //     return this.http.put<Job[]>(`${this.apiUrl}/jobs/${slug}`, job);
+    // }
 
     //DELETE ONE
-    delete_job(slug: any): Observable<Job[]> {
-        return this.http.delete<Job[]>(`${this.apiUrl}/jobs/${slug}`);
-    }
+    // delete_job(slug: any): Observable<Job[]> {
+    //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs/${slug}`);
+    // }
 
     //DELETE ALL
-    delete_all_jobs(): Observable<Job[]> {
-        return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
-    }
+    // delete_all_jobs(): Observable<Job[]> {
+    //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
+    // }
 
     getJobsByCategory(slug: String): Observable<Job[]> {
         return this.http.get<Job[]>(`${this.apiUrl}/categories/${slug}`);
     }
     
     //SEARCH
-    find_job_name(search: string): Observable<any> {
-        return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
-            map((data) => {
-            return data;
-            })
-        );
-    }
+    // find_job_name(search: string): Observable<any> {
+    //     return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
+    //         map((data) => {
+    //         return data;
+    //         })
+    //     );
+    // }
 }

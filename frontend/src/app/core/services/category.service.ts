@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
-import { environment } from '../../environments/evironment'; // Importa el archivo environment
+import { environment } from '../../environments/evironment';
+import { tap } from 'rxjs/operators';
 
 const URL = `${environment.URL}/categories`; // Usa la URL del environment
 
@@ -14,7 +15,10 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   all_categories(params: any): Observable<Category[]> {
-    return this.http.get<Category[]>(URL, { params });
+    console.log('Fetching all categories with params:', params);
+    return this.http.get<Category[]>(URL, { params }).pipe(
+      tap(categories => console.log('Received categories:', categories))
+    );
   }
 
   // all_categories_select(): Observable<Category[]> {
