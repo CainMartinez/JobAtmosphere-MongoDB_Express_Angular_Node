@@ -1,40 +1,87 @@
-<header class="header">
-  <div class="container">
-    <div class="logo">
-      <a routerLink="home"><h3 class="net">TIC <strong class="jobs">Jobs</strong> NET</h3></a><p class="description">Offers you the best job offers related to the IT sector</p>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+  <!-- Container wrapper -->
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- Left elements -->
+    <div class="d-flex align-items-center">
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="shop">Shop</a>
+          </li>
+          <!-- Uncomment and adjust these lines based on your authentication logic -->
+          <!-- <li class="nav-item" *ngIf="logged === false">
+            <a class="nav-link" routerLink="login">Log in/Sign In</a>
+          </li>
+          <li class="nav-item" *ngIf="logged === true">
+            <a class="nav-link" routerLink="settings">Settings</a>
+          </li>
+          <li class="nav-item" *ngIf="logged === true">
+            <a class="nav-link" [routerLink]="['/profile/me', currentUser.username]" routerLinkActive="active">
+              <img [src]="currentUser.image || 'https://static.jobionready.io/images/smiley-cyrus.jpg'" class="user-pic rounded-circle" style="width: 35px; height: 35px;" alt="user image" />
+              {{ currentUser.username }}
+            </a>
+          </li> -->
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
     </div>
-    <div></div>
-    <nav>
-      <ul>
-        <li>
-          <a routerLink="home">
-            Home
-          </a>
-        </li>
-        <li>
-          <a routerLink="shop">
-            Shop
-          </a>
-        </li>
-        <!-- <li *ngIf="logged === false">
-          <a routerLink="login">
-            Log in/Sign In
-          </a>
-        </li> -->
-        <!-- <li *ngIf="logged === true">
-          <a routerLink="settings">
-            Settings
-          </a>
-        </li>
-        <li *ngIf="logged === true">
-          <a class="nav-link"
-            [routerLink]="['/profile/me', currentUser.username]"
-            routerLinkActive="active">
-            <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="user-pic" style="width: 35px; height: 35px;" alt="user image" />
-            {{ currentUser.username }}
-          </a> 
-        </li>-->
-      </ul>
-    </nav>
+    <!-- Center brand -->
+    <a class="navbar-brand mx-auto" routerLink="home">
+      <h5 class="pt-1">TIC <strong class="jobs">Jobs</strong> NET</h5>
+    </a>
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <!-- <a class="text-reset me-3" href="#">
+        <i class="fas fa-shopping-cart text-white"></i>
+      </a> -->
+      <!-- Notifications -->
+      <div class="dropdown">
+        <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Log in
+          <!-- <i class="fas fa-bell text-white"></i> -->
+          <!-- <span class="badge rounded-pill badge-notification bg-danger">1</span> -->
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="#">Create a new account</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Login with your account</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Avatar -->
+      <!-- <div class="dropdown"> Si login es true cargar esta vista y ocultar la anterior
+        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+          <li>
+            <a class="dropdown-item" href="#">My profile</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Settings</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Logout</a>
+          </li>
+        </ul>
+      </div> -->
+    </div>
+    <!-- Right elements -->
   </div>
-</header>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

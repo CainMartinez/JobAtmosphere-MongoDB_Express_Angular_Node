@@ -1,4 +1,4 @@
-<div class="d-flex flex-wrap" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="70" (scrolled)="scroll()">
+<div class="d-flex flex-wrap" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="1000" (scrolled)="scroll()">
   <div class="p-3 mb-5" *ngFor="let category of categories">
     <app-card-category [category]="category"></app-card-category>
   </div>

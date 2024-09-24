@@ -8,7 +8,7 @@ const create = asyncHandler(async (req, res) => {
     id_cat: req.body.id_cat || null,
     category_name: req.body.category_name || null,
     image: req.body.image || null,
-    products: []
+    jobs: []
   };
 
   const category = await new Category(category_data);

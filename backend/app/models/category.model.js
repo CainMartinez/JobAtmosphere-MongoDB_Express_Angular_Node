@@ -46,13 +46,13 @@ category_schema.methods.toCategoryResponse = function () {
     };
 };
 
-// category_schema.methods.toCategoryCarouselResponse = function () {
-//     return {
-//         slug: this.slug,
-//         image: this.image,
-//         category_name: this.category_name
-//     };
-// };
+category_schema.methods.toCategoryCarouselResponse = function () {
+    return {
+        slug: this.slug,
+        image: this.image,
+        category_name: this.category_name
+    };
+};
 
 
 category_schema.methods.addJob = function (job_id) {

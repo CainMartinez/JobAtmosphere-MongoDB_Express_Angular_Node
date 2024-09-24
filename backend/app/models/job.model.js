@@ -101,11 +101,11 @@ JobSchema.methods.toJobResponse = async function (user) {
     }
 }
 
-// JobSchema.methods.toJobCarouselResponse = async function () {
-//     return {
-//         images: this.images
-//     }
-// }
+JobSchema.methods.toJobCarouselResponse = async function () {
+    return {
+        images: this.images
+    }
+}
 
 // JobSchema.methods.updateFavoriteCount = async function () {
 

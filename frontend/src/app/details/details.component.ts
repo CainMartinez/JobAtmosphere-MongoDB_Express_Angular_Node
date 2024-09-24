@@ -4,6 +4,8 @@ import { JobService } from '../core/services/job.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgControlStatusGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
+import { CarouselDetails } from '../core/models/carousel.model';
+
 
 @Component({
     selector: 'app-details',
@@ -16,7 +18,7 @@ export class DetailsComponent implements OnInit {
     job!: Job;
     //author!: Profile;
     slug!: string | null;
-    // @Input() page!: CarouselDetails[];
+    @Input() page!: CarouselDetails[];
     // currentUser!: User;
     comments!: Comment[];
     user_image!: string;

@@ -55,3 +55,14 @@
 .net{
   color: rgb(85, 251, 118);
 }
+/* Estilo por defecto para los enlaces de navegación */
+.navbar-nav .nav-link {
+  color: white; /* Color blanco por defecto */
+  transition: all 0.3s ease; /* Transición suave para los cambios */
+}
+
+/* Estilo para el hover */
+.navbar-nav .nav-link:hover {
+  font-weight: bold; /* Negrita al pasar el cursor */
+  font-size: calc(1em + 1px); /* Aumenta la fuente en 1px */
+}

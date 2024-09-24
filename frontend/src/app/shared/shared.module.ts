@@ -8,6 +8,10 @@ import { CardCategoryComponent } from '../shared/card-category/card-category.com
 import { ListJobsComponent } from '../shared/list-jobs/list-jobs.component';
 import { CardJobComponent } from '../shared/card-job/card-job.component';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { CarouselItemsComponent } from './carousel-items/carousel-items.component';
+import { CarouselComponent } from './carousel/carousel.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+
 
 @NgModule({
     imports: [
@@ -16,13 +20,16 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
         ReactiveFormsModule,
         HttpClientModule,
         RouterModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        NgbModule
     ],
     declarations:[
         ListCategoriesComponent,
         CardCategoryComponent,
         ListJobsComponent,
-        CardJobComponent
+        CardJobComponent,
+        CarouselItemsComponent,
+        CarouselComponent
     ],
     exports: [
         FormsModule,
@@ -30,7 +37,9 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
         ListCategoriesComponent,
         CardCategoryComponent,
         ListJobsComponent,
-        CardJobComponent
+        CardJobComponent,
+        CarouselItemsComponent,
+        CarouselComponent
     ],
 })
 export class SharedModule { }
