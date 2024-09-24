@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
-import { environment } from '../../environments/evironment';
+import { environment } from '../../environments/environment';
 import { tap } from 'rxjs/operators';
 
-const URL = `${environment.URL}/categories`; // Usa la URL del environment
+const URL = `${environment.URL}/categories`;
 
 @Injectable({
   providedIn: 'root'

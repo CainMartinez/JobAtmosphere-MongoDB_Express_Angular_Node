@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { Job } from '../models/job.model';
-import { environment } from '../../environments/evironment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -43,7 +43,7 @@ export class JobService {
     //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
     // }
 
-    getProductsByCategory(slug: string): Observable<any> {
+    getJobsByCategory(slug: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/categories/${slug}/jobs`);
     }
     //SEARCH

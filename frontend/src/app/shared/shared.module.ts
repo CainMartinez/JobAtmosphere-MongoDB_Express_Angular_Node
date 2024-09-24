@@ -7,7 +7,7 @@ import { ListCategoriesComponent } from '../shared/list-categories/list-categori
 import { CardCategoryComponent } from '../shared/card-category/card-category.component';
 import { ListJobsComponent } from '../shared/list-jobs/list-jobs.component';
 import { CardJobComponent } from '../shared/card-job/card-job.component';
-
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 @NgModule({
     imports: [
@@ -15,7 +15,8 @@ import { CardJobComponent } from '../shared/card-job/card-job.component';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule
+        RouterModule,
+        InfiniteScrollModule
     ],
     declarations:[
         ListCategoriesComponent,

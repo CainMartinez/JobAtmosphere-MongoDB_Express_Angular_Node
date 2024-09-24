@@ -16,40 +16,21 @@ const create = asyncHandler(async (req, res) => {
   res.json(new_category);
 });
 
-// const findCategoriesSelect = asyncHandler(async (req, res) => {
-
-//   const categories = await Category.find();
-
-//   if (!categories) {
-//     return res.status(401).json({
-//       message: "Category not found"
-//     })
-//   }
-
-//   return res.status(200).json({
-//     categories: await Promise.all(categories.map(async categories => {
-//       return await categories.toCategoryResponse()
-//     }))
-//   });
-// });
-
-
 // ENCONTRAR TODAS LAS CATEGORIAS
 const findAll = asyncHandler(async (req, res) => {
-
-  const { offset, limit } = req.query;
+  const { offset = 0, limit = 4 } = req.query;
 
   const categories = await Category.find({}, {}, { skip: Number(offset), limit: Number(limit) });
 
   if (!categories) {
     return res.status(401).json({
       message: "Category not found"
-    })
+    });
   }
 
   return res.status(200).json({
-    categories: await Promise.all(categories.map(async categories => {
-      return await categories.toCategoryResponse()
+    categories: await Promise.all(categories.map(async category => {
+      return await category.toCategoryResponse();
     }))
   });
 });
