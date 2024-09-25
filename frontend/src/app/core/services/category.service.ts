@@ -5,8 +5,6 @@ import { Category } from '../models/category.model';
 import { environment } from '../../environments/environment';
 import { tap } from 'rxjs/operators';
 
-const URL = `${environment.URL}/categories`;
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +14,14 @@ export class CategoryService {
 
   all_categories(params: any): Observable<Category[]> {
     console.log('Fetching all categories with params:', params);
-    return this.http.get<Category[]>(URL, { params }).pipe(
+    return this.http.get<Category[]>(`${environment.URL}/categories`, { params }).pipe(
       tap(categories => console.log('Received categories:', categories))
     );
   }
 
-  // all_categories_select(): Observable<Category[]> {
-  //   return this.http.get<Category[]>(URL_select)
-  // }
+  all_categories_select(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${environment.URL}/categories_select_filter`)
+  }
 
   // get_category(id: String): Observable<Category> {
   //   return this.http.get<Category>(`${URL}/${id}`);

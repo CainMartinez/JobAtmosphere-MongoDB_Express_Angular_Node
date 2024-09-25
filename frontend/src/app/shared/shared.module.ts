@@ -10,8 +10,9 @@ import { CardJobComponent } from '../shared/card-job/card-job.component';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { CarouselItemsComponent } from './carousel-items/carousel-items.component';
 import { CarouselComponent } from './carousel/carousel.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SearchComponent } from '../shared/search/search.component';
+import { FiltersComponent } from './filters/filters.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
         ListJobsComponent,
         CardJobComponent,
         CarouselItemsComponent,
-        CarouselComponent
+        CarouselComponent,
+        FiltersComponent,
+        SearchComponent
     ],
     exports: [
         FormsModule,
@@ -39,7 +42,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
         ListJobsComponent,
         CardJobComponent,
         CarouselItemsComponent,
-        CarouselComponent
+        CarouselComponent,
+        FiltersComponent,
+        SearchComponent
     ],
 })
 export class SharedModule { }

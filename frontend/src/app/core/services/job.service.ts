@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { Job } from '../models/job.model';
 import { environment } from '../../environments/environment';
+import { Filters } from '../models/filters.model';
+
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +24,11 @@ export class JobService {
     get_job(slug: String): Observable<Job> {
         return this.http.get<Job>(`${this.apiUrl}/jobs/${slug}`);
     }
-
+    get_jobs_filter(filters : Filters): Observable<Job[]> {
+        let params = {};
+        params = filters;
+        return this.http.get<Job[]>(`${this.apiUrl}/jobs` , {params});
+    }
     //CREATE
     // create_job(job: Job): Observable<Job[]> {
     //     return this.http.post<Job[]>(`${this.apiUrl}/jobs`, job);
@@ -47,11 +53,11 @@ export class JobService {
         return this.http.get<any>(`${this.apiUrl}/categories/${slug}/jobs`);
     }
     //SEARCH
-    // find_job_name(search: string): Observable<any> {
-    //     return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
-    //         map((data) => {
-    //         return data;
-    //         })
-    //     );
-    // }
+    find_job_name(search: string): Observable<any> {
+        return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
+            map((data) => {
+            return data;
+            })
+        );
+    }
 }

@@ -1,0 +1,15 @@
+<form class="domain-form" name="search">
+    <div class="main-search-input-wrap">
+        <div class="main-search-input fl-wrap">
+            <div class="main-search-input-item">
+                <input type="text" list="search" class="form-control" placeholder="Enter job name..."
+                    name="txt" [(ngModel)]="search_value" (input)="type_event($any($event.target).value)"
+                    (change)="search_event(this)">
+            </div>
+            <button type="submit" class="main-search-button btn btn-primary">Search</button>
+        </div>
+    </div>
+    <datalist id="search">
+        <option *ngFor="let job of listJobs" [value]="job.name">{{job.name}}</option>
+    </datalist>
+</form>
