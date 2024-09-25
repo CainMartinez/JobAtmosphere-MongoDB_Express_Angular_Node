@@ -1,14 +1,16 @@
-<div class="card p-3 mb-2">
-  <div class="d-flex justify-content-between">
-    <div class="d-flex flex-row align-items-center">
-      <img src="{{job.img}}" class="card-img-top" alt="{{job.name}}" style="width: 550px; height: 400px; align-items: center;">
+<a [routerLink]="['/details/', job.slug]" class="card-link">
+  <div class="card p-3 mb-2">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex flex-row align-items-center">
+        <img src="{{job.img}}" class="card-img-top" alt="{{job.name}}" style="width: 550px; height: 400px; align-items: center;">
+      </div>
+    </div>
+    <div class="mt-5">
+      <h3 class="heading">{{job.name}}</h3><hr>
+      <div><p class="justify-text">{{job.description}}</p></div>
+      <div class="d-flex justify-content-center mt-5">
+        <span class="btn btn-secondary">View Details</span>
+      </div>
     </div>
   </div>
-  <div class="mt-5">
-    <h3 class="heading">{{job.name}}</h3><hr>
-    <div><p class="justify-text">{{job.description}}</p></div>
-    <div class="d-flex justify-content-center mt-5">
-      <a class="btn btn-secondary" [routerLink]="['/details/', job.slug]" data-abc="true">View Details</a>
-    </div>
-  </div>
-</div>
+</a>

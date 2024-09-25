@@ -1,11 +1,18 @@
 /* Estilo para las tarjetas */
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.2); /* Sombreado para efecto 3D */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombreado para efecto 3D */
 }
 
 /* Estilo para el hover */
 .card:hover {
   transform: translateY(-10px); /* Mueve la tarjeta hacia arriba */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.4); /* Aumenta el sombreado */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2); /* Aumenta el sombreado */
+}
+
+/* Eliminar el estilo predeterminado del enlace */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }

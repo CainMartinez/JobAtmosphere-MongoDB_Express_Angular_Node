@@ -2,8 +2,7 @@
         <div *ngIf="!job" class="alert alert-warning text-center">No job found</div>
         <div class="job card mb-3" *ngIf="job">
             <div class="card-header">
-                <!-- <app-carousel></app-carousel> -->
-                <img src="{{job.img}}" class="img-fluid rounded-top" alt="{{job.name}}">
+                <app-carousel></app-carousel>
             </div>
             <div class="card-body">
                 <h3 class="card-title">{{job.name}}</h3>
