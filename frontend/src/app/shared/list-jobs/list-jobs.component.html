@@ -1,6 +1,7 @@
-<div class="d-flex flex-wrap">
-  <app-search (searchEvent)="get_list_filtered($event)"></app-search>
+<app-search (searchEvent)="get_list_filtered($event)"></app-search><br>
 <app-filters  (eventofiltros)="get_list_filtered($event)" [listCategories]="listCategories"></app-filters>
+  
+<div class="d-flex flex-wrap">
   <div class="p-3 mb-5" *ngFor="let job of jobs">
     <app-card-job [job]="job"></app-card-job>
   </div>

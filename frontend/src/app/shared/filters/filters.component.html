@@ -1,25 +1,28 @@
-<div class="container-fluid bg-white subheader">
-	<div class="row d-flex justify-content-center align-items-center width: 100%;" style="margin-top: 10px;">
-    <div class="col-md-2 pt-3">
-      <div class="form-group ">
-        <select class="form-control" name="category" id="category" [(ngModel)]="id_cat" (change)="filter_jobs()">
-          <option disabled selected value="">Category</option>
-          <option *ngFor="let category of listCategories"  [value]="category.id_cat">{{category.category_name}}</option>
-        </select>
+<section class="pb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" name="category" id="category"
+            [(ngModel)]="id_cat" (change)="filter_jobs()">
+            <option disabled selected value="">Category</option>
+            <option *ngFor="let category of listCategories" [value]="category.id_cat">{{category.category_name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control border-0 mb-1 px-4 py-4 rounded shadow" placeholder="Min Salary"
+            [(ngModel)]="salary_min" min="0" step="500" (input)="filter_jobs()">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control border-0 mb-1 px-4 py-4 rounded shadow" placeholder="Max Salary"
+            [(ngModel)]="salary_max" min="0" step="500" (input)="filter_jobs()">
+        </div>
+        <div class="form-group text-center">
+          <button type="button" class="btn btn-success" (click)="remove_filters()">
+            <i class="fa-solid fa-eraser"></i> Clear
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="col-md-2 pt-3">
-      <div>
-        <input type="number" class="form-control" placeholder="Min Salary" [(ngModel)]="price_min" min="0" step="5" (input)="filter_jobs()">
-      </div>
-    </div>
-    <div class="col-md-2 pt-3">
-      <div>
-        <input type="number" class="form-control" placeholder="Max Salary" [(ngModel)]="price_max" min="0" step="5" (input)="filter_jobs()">
-      </div>
-    </div>
-    <div class="col-md-2 pt-3">
-      <button type="button" class="btn btn-danger btn-block" (click)="remove_filters()">Remove Filters</button>
     </div>
   </div>
-</div>
+</section>

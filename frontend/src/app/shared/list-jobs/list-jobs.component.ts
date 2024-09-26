@@ -34,7 +34,8 @@ export class ListJobsComponent implements OnInit {
 
   ngOnInit(): void {
     this.slug_Category = this.activatedRoute.snapshot.paramMap.get('slug');
-    
+    this.getListForCategory();    
+
     if (this.slug_Category) {
       this.get_job_by_cat();
     } else {

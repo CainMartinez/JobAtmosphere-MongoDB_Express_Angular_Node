@@ -21,8 +21,8 @@ export class FiltersComponent implements OnInit {
   filters!: Filters 
 
   id_cat: string = "";
-  price_max: number | undefined;
-  price_min: number | undefined;
+  salary_max: number | undefined;
+  salary_min: number | undefined;
 
   constructor( private ActivatedRoute: ActivatedRoute, private Router: Router, private Location: Location ) 
   {
@@ -50,9 +50,9 @@ export class FiltersComponent implements OnInit {
         this.filters.category = this.id_cat;
       }
       
-      this.price_calc(this.price_min, this.price_max);
-      this.filters.price_min = this.price_min ? this.price_min : undefined;
-      this.filters.price_max = this.price_max == 0 || this.price_max == null ? undefined : this.price_max;
+      this.salary_calc(this.salary_min, this.salary_max);
+      this.filters.salary_min = this.salary_min ? this.salary_min : undefined;
+      this.filters.salary_max = this.salary_max == 0 || this.salary_max == null ? undefined : this.salary_max;
 
       setTimeout(() => {
           this.Location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
@@ -61,14 +61,14 @@ export class FiltersComponent implements OnInit {
 
     }
 
-  public price_calc(price_min: number | undefined, price_max: number | undefined) {    
-      if (typeof price_min == 'number' && typeof price_max == 'number') {
-        if(price_min > price_max){
-          this.price_min = price_min;
-          this.price_max = undefined;
+  public salary_calc(salary_min: number | undefined, salary_max: number | undefined) {    
+      if (typeof salary_min == 'number' && typeof salary_max == 'number') {
+        if(salary_min > salary_max){
+          this.salary_min = salary_min;
+          this.salary_max = undefined;
         }else{
-          this.price_min = price_min;
-          this.price_max = price_max;
+          this.salary_min = salary_min;
+          this.salary_max = salary_max;
         }
       }
     }
@@ -76,8 +76,8 @@ export class FiltersComponent implements OnInit {
     public remove_filters(){
       window.location.assign("http://localhost:4200/shop")
       this.filters.category && this.id_cat === "";
-      this.filters.price_min = undefined;
-      this.filters.price_max = undefined;
+      this.filters.salary_min = undefined;
+      this.filters.salary_max = undefined;
     }
 
     Highlights() {
@@ -85,8 +85,8 @@ export class FiltersComponent implements OnInit {
       
       if (routeFilters.search == undefined) {
         this.id_cat = routeFilters.category || '';
-        this.price_min = routeFilters.price_min;
-        this.price_max = routeFilters.price_max;
+        this.salary_min = routeFilters.salary_min;
+        this.salary_max = routeFilters.salary_max;
       }
     }
 }

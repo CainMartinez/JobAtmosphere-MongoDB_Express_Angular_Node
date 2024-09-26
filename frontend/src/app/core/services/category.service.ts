@@ -20,7 +20,8 @@ export class CategoryService {
   }
 
   all_categories_select(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.URL}/categories_select_filter`)
+    return this.http.get<Category[]>(`${environment.URL}/categories_select_filter`).pipe(
+      tap(categories => console.log('Received categories:', categories)));
   }
 
   // get_category(id: String): Observable<Category> {
