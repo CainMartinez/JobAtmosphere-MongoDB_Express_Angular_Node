@@ -15,7 +15,7 @@ export class Filters {
         name?: string,
     ) 
     {
-        this.limit = limit || 3;
+        this.limit = limit || 2;
         this.offset = offset || 0;
         this.salary_min = salary_min;
         this.salary_max = salary_max;

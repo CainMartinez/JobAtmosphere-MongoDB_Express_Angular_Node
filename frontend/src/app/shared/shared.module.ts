@@ -13,6 +13,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from '../shared/search/search.component';
 import { FiltersComponent } from './filters/filters.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { FiltersComponent } from './filters/filters.component';
         CarouselItemsComponent,
         CarouselComponent,
         FiltersComponent,
-        SearchComponent
+        SearchComponent,
+        PaginationComponent
     ],
     exports: [
         FormsModule,
@@ -44,7 +46,8 @@ import { FiltersComponent } from './filters/filters.component';
         CarouselItemsComponent,
         CarouselComponent,
         FiltersComponent,
-        SearchComponent
+        SearchComponent,
+        PaginationComponent
     ],
 })
 export class SharedModule { }

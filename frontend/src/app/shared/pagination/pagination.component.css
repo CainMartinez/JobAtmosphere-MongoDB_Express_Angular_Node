@@ -1,0 +1,183 @@
+/* Colors */
+.white {
+  color: #fff;
+}
+.black {
+  color: #000;
+}
+.grey {
+  color: #595959;
+}
+.grey-dark {
+  color: #2b2b2b;
+}
+.grey-light {
+  color: #eee;
+}
+.green {
+  color: #86c023;
+}
+.blue {
+  color: #017ac7;
+}
+
+/* Transition */
+.duration {
+  transition-duration: 400ms;
+}
+.easing {
+  transition-timing-function: ease;
+}
+
+/* Reset */
+html,
+body {
+  font-family: sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.pagination {
+  display: inline-block;
+  height: 70px;
+  margin-top: 70px;
+  padding: 0 25px;
+  border-radius: 35px;
+  background-color: #eee;
+}
+
+@media only screen and (min-width: 120px) and (max-width: 767px) {
+  .pagination {
+    height: 50px;
+    margin-top: 50px;
+    padding: 0 10px;
+    border-radius: 25px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .pagination {
+    height: 50px;
+    margin-top: 50px;
+    padding: 0 10px;
+    border-radius: 25px;
+  }
+}
+
+@media only screen and (min-width: 120px) and (max-width: 1024px) {
+  .pagination {
+    height: 50px;
+    margin-top: 50px;
+    padding: 0 10px;
+    border-radius: 25px;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .pagination {
+    height: 70px;
+    margin-top: 70px;
+    padding: 0 25px;
+    border-radius: 35px;
+  }
+}
+.page-numbers {
+  color: #333; /* Color gris oscuro por defecto */
+  text-decoration: none;
+  cursor: pointer;
+  transition: none; /* Deshabilitar transiciones */
+}
+
+.page-numbers:hover {
+  color: #333; /* Mantener el color gris oscuro en hover */
+  text-decoration: none; /* Deshabilitar subrayado en hover */
+}
+
+.page-numbers.disabled {
+  color: #ccc; /* Color gris claro para elementos deshabilitados */
+  cursor: not-allowed;
+}
+
+.page-numbers.current {
+  font-weight: bold;
+  color: #000; /* Color negro para la página actual */
+}
+.page-numbers {
+  display: block;
+  padding: 0 25px;
+  float: left;
+  transition: 400ms ease;
+  color: #595959;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  line-height: 70px;
+}
+
+.page-numbers:hover,
+.page-numbers.current {
+  background-color: #0dcaf0;
+  color: #fff;
+}
+
+.page-numbers.prev:hover,
+.page-numbers.next:hover {
+  background-color: transparent;
+  color: #0dcaf0;
+}
+
+@media only screen and (min-width: 120px) and (max-width: 767px) {
+  .page-numbers {
+    padding: 0 15px;
+    font-size: 16px;
+    line-height: 50px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .page-numbers {
+    padding: 0 15px;
+    font-size: 16px;
+    line-height: 50px;
+  }
+}
+
+@media only screen and (min-width: 120px) and (max-width: 1024px) {
+  .page-numbers {
+    padding: 0 14px;
+    display: none;
+  }
+
+  .page-numbers:nth-of-type(2) {
+    position: relative;
+    padding-right: 50px;
+  }
+
+  .page-numbers:nth-of-type(2)::after {
+    content: '...';
+    position: absolute;
+    font-size: 25px;
+    top: 0;
+    left: 45px;
+  }
+
+  .page-numbers:nth-child(-n+3),
+  .page-numbers:nth-last-child(-n+3) {
+    display: block;
+  }
+
+  .page-numbers:nth-last-child(-n+4) {
+    padding-right: 14px;
+  }
+
+  .page-numbers:nth-last-child(-n+4)::after {
+    content: none;
+  }
+}

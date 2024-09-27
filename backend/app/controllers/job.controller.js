@@ -48,8 +48,8 @@ const findAllJob = asyncHandler(async (req, res) => {
         return varQuery != "undefined" && varQuery ? varQuery : otherResult;
     };
 
-    // let limit = transUndefined(req.query.limit, 3);
-    // let offset = transUndefined(req.query.offset, 0);
+    let limit = transUndefined(req.query.limit, 2);
+    let offset = transUndefined(req.query.offset, 0);
     let category = transUndefined(req.query.category, "");
     let name = transUndefined(req.query.name, "");
     let company = transUndefined(req.query.company, "");
@@ -73,8 +73,7 @@ const findAllJob = asyncHandler(async (req, res) => {
     //     query._id = { $in: favoriter.favorites };
     // }
 
-    const jobs = await Job.find(query);
-    // const jobs = await Job.find(query).limit(Number(limit)).skip(Number(offset));
+    const jobs = await Job.find(query).limit(Number(limit)).skip(Number(offset));
     const Job_count = await Job.find(query).countDocuments();
 
     // return res.json(jobs)

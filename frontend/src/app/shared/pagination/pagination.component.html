@@ -1,0 +1,9 @@
+<div class="pagination-wrapper" *ngIf="showPagination">
+  <div class="pagination">
+    <a class="prev page-numbers" href="javascript:;" [ngClass]="{'disabled': currentPage === 1}" (click)="previousPage()">Prev</a>
+    <span *ngFor="let a of getRange(numPages)" aria-current="page" class="page-numbers" [ngClass]="{'current': a === currentPage}" (click)="changePage(a)">
+      {{ a }}
+    </span>
+    <a class="next page-numbers" href="javascript:;" [ngClass]="{'disabled': currentPage === numPages}" (click)="nextPage()">Next</a>
+  </div>
+</div>

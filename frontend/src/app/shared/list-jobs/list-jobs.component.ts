@@ -21,9 +21,12 @@ export class ListJobsComponent implements OnInit {
   routeFilters!: string | null;
   filters = new Filters();
   offset: number = 0;
-  limit: number = 3;
+  limit: number = 2;
   totalPages: Array<number> = [];
   currentPage: number = 1;
+  lastParams!: Filters;
+  numItems?: number;
+  totalJobs: number = 0;
 
   constructor(
     private jobService: JobService, 
@@ -34,13 +37,20 @@ export class ListJobsComponent implements OnInit {
 
   ngOnInit(): void {
     this.slug_Category = this.activatedRoute.snapshot.paramMap.get('slug');
-    this.getListForCategory();    
-
-    if (this.slug_Category) {
-      this.get_job_by_cat();
-    } else {
-      this.getAllJobs();
-    }
+    this.getListForCategory();   
+    this.get_list_filtered({ limit: this.limit, offset: 0 });
+ 
+  
+      if(this.slug_Category !== null) {
+        this.get_job_by_cat();
+      }
+      else if(this.routeFilters !== null){
+        this.refreshRouteFilter();
+        this.get_list_filtered(this.filters);
+      }else{
+        // console.log(window.location.href);
+        this.get_list_filtered(this.filters);
+      }
   }
 
   get_job_by_cat(): void {
@@ -48,8 +58,10 @@ export class ListJobsComponent implements OnInit {
       this.jobService.getJobsByCategory(this.slug_Category).subscribe(
         (data: any) => {
           console.log('API response:', data); // Verifica la respuesta completa de la API
-          if (data && data.jobs) {
+          if (data && data.jobs && data.Job_count !== undefined && data.Job_count !== null) {
             this.jobs = data.jobs;
+            this.totalJobs = data.Job_count; // Actualiza el valor de totalJobs
+            this.totalPages = Array.from(new Array(Math.ceil(data.Job_count / this.limit)), (val, index) => index + 1);
             console.log('Jobs:', this.jobs); // Verifica los trabajos recibidos
           } else {
             console.error('No jobs found in the response');
@@ -70,7 +82,7 @@ export class ListJobsComponent implements OnInit {
         } else {
           console.error('Data.jobs is not an array');
         }
-        console.log(this.jobs);
+        console.log("Get ALL jobs",this.jobs);
       },
       (error: any) => {
         console.error('Error fetching all jobs:', error);
@@ -78,14 +90,23 @@ export class ListJobsComponent implements OnInit {
     );
   }
 
-  get_list_filtered(filters: Filters) {
+  get_list_filtered(filters: any) {
     this.filters = filters;
-    // console.log(JSON.stringify(this.filters));
     this.jobService.get_jobs_filter(filters).subscribe(
       (data: any) => {
-        this.jobs = data.jobs;
-        this.totalPages = Array.from(new Array(Math.ceil(data.job_count / this.limit)), (val, index) => index + 1);
-        console.log(this.jobs);
+        console.log('API response:', data); // Verifica la respuesta completa de la API
+        if (data && data.jobs && data.Job_count !== undefined && data.Job_count !== null) {
+          this.jobs = data.jobs;
+          this.totalJobs = data.Job_count; // Actualiza el valor de totalJobs
+          const totalPagesCount = Math.ceil(data.Job_count / this.limit);
+          this.totalPages = Array.from(new Array(totalPagesCount), (val, index) => index + 1);
+          // console.log(this.jobs);
+        } else {
+          console.error('La respuesta no contiene la propiedad jobs o Job_count:', data);
+        }
+      },
+      (error) => {
+        console.error('Error al obtener los trabajos:', error);
       }
     );
   }
@@ -123,5 +144,14 @@ export class ListJobsComponent implements OnInit {
     this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
     // console.log(this.Location);
     this.get_list_filtered(this.filters);
+  }
+  testPagination(data: any) {
+    let params: any = {};
+    if (this.lastParams) {
+      params = this.lastParams;
+    }
+    params['limit'] = data.limit;
+    params['offset'] = data.offset;
+    this.get_list_filtered(params);
   }
 }
