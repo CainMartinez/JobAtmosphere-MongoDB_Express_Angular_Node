@@ -1,5 +1,5 @@
-<ngb-carousel *ngIf="page === 'categories'" style="background-color: #1e262d">
-  <ng-template *ngFor="let category of categories;" ngbSlide>
+<ngb-carousel *ngIf="config.page === 'categories'" style="background-color: #1e262d">
+  <ng-template *ngFor="let category of config.categories;" ngbSlide>
     <div class="picsum-img-wrapper contenedor">
       <img class="img_carousel" src="../../../{{category.image}}" [routerLink]="['/shop/categories/', category.slug]" />
     </div>
@@ -8,9 +8,8 @@
     </div>
   </ng-template>
 </ngb-carousel>
-
-<ngb-carousel *ngIf="page === 'details'" style="background-color: #1e262d">
-  <ng-template *ngFor="let item of jobs_details;" ngbSlide>
+<ngb-carousel *ngIf="config.page === 'details'" style="background-color: #1e262d">
+  <ng-template *ngFor="let item of config.jobs_details;" ngbSlide>
     <div class="picsum-img-wrapper contenedor">
       <img class="img_carousel" src="{{item}}" />
     </div>
