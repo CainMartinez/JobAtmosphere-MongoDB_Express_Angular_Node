@@ -43,7 +43,7 @@ app.use('/api', require('../routes/user.routes.js')); // Usa el router directame
 require('../routes/category.routes')(app);
 require('../routes/job.routes.js')(app);
 require('../routes/carousel.routes')(app);
-// require('../routes/profile.routes')(app);
+app.use('/api/profiles', require('../routes/profile.routes.js'));
 // require('../routes/comment.routes')(app);
 
 app.listen(process.env.PORT, () => {

@@ -2,11 +2,6 @@ const User = require('../models/user.model');
 const asyncHandler = require('express-async-handler');
 const argon2 = require('argon2');
 
-// @desc registration for a user
-// @route POST /api/users
-// @access Public
-// @required fields {email, username, password}
-// @return User
 const registerUser = asyncHandler(async (req, res) => {
     const { user } = req.body;
 
@@ -45,10 +40,6 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc get currently logged-in user
-// @route GET /api/user
-// @access Private
-// @return User
 const getCurrentUser = asyncHandler(async (req, res) => {
     // After authentication; email and hashsed password was stored in req
     const email = req.userEmail;
@@ -65,11 +56,6 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 });
 
-// @desc login for a user
-// @route POST /api/users/login
-// @access Public
-// @required fields {email, password}
-// @return User
 const userLogin = asyncHandler(async (req, res) => {
     const { user } = req.body;
 
@@ -94,11 +80,6 @@ const userLogin = asyncHandler(async (req, res) => {
 
 });
 
-// @desc update currently logged-in user
-// Warning: if password or email is updated, client-side must update the token
-// @route PUT /api/user
-// @access Private
-// @return User
 const updateUser = asyncHandler(async (req, res) => {
     const { user } = req.body;
 
