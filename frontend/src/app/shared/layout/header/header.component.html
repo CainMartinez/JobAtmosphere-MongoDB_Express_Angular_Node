@@ -18,19 +18,15 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="shop">Shop</a>
           </li>
-          <!-- Uncomment and adjust these lines based on your authentication logic -->
-          <!-- <li class="nav-item" *ngIf="logged === false">
-            <a class="nav-link" routerLink="login">Log in/Sign In</a>
-          </li>
-          <li class="nav-item" *ngIf="logged === true">
+          <li class="nav-item" *ngIf="logged">
             <a class="nav-link" routerLink="settings">Settings</a>
           </li>
-          <li class="nav-item" *ngIf="logged === true">
-            <a class="nav-link" [routerLink]="['/profile/me', currentUser.username]" routerLinkActive="active">
-              <img [src]="currentUser.image || 'https://static.jobionready.io/images/smiley-cyrus.jpg'" class="user-pic rounded-circle" style="width: 35px; height: 35px;" alt="user image" />
+          <li class="nav-item" *ngIf="logged">
+            <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
+              <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="user-pic rounded-circle" style="width: 35px; height: 35px;" alt="user image" />
               {{ currentUser.username }}
             </a>
-          </li> -->
+          </li>
         </ul>
         <!-- Left links -->
       </div>
@@ -47,7 +43,7 @@
         <i class="fas fa-shopping-cart text-white"></i>
       </a> -->
       <!-- Notifications -->
-      <div class="dropdown">
+      <div class="dropdown" *ngIf="!logged">
         <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Log in
           <!-- <i class="fas fa-bell text-white"></i> -->
@@ -55,30 +51,30 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
           <li>
-            <a class="dropdown-item" href="#">Create a new account</a>
+            <a class="dropdown-item" routerLink="register">Create a new account</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Login with your account</a>
+            <a class="dropdown-item" routerLink="login">Login with your account</a>
           </li>
         </ul>
       </div>
       <!-- Avatar -->
-      <!-- <div class="dropdown"> Si login es true cargar esta vista y ocultar la anterior
+      <div class="dropdown" *ngIf="logged">
         <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+          <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="rounded-circle" height="25" alt="user image" loading="lazy" />
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
           <li>
-            <a class="dropdown-item" href="#">My profile</a>
+            <a class="dropdown-item" routerLink="/profile/me">My profile</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" routerLink="settings">Settings</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Logout</a>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
           </li>
         </ul>
-      </div> -->
+      </div>
     </div>
     <!-- Right elements -->
   </div>

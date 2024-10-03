@@ -6,7 +6,7 @@ import { FooterComponent, HeaderComponent, SharedModule } from './shared';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     CoreModule,
     HttpClientModule,
     CarouselModule.forRoot(),
+    AuthModule
 
   ],
   providers: [],
