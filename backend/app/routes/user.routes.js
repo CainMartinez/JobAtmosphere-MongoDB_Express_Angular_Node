@@ -6,7 +6,6 @@ const verifyJWTOptional = require('../middleware/verifyJWTOptional');
 
 // Authentication
 router.post('/users/login', userController.userLogin);
-router.post('/users/refresh-token', userController.refreshToken);
 
 // Registration
 router.post('/users/register', userController.registerUser);

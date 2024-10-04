@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://static.productionready.io/images/smiley-cyrus.jpg"
     },
-    refreshToken: String,
     favouriteArticles: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article'
@@ -62,7 +61,7 @@ userSchema.methods.generateAccessToken = function() {
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1m"}
+        { expiresIn: "1d"}
     );
     return accessToken;
 }
