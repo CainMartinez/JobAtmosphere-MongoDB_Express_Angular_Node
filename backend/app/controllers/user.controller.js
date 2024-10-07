@@ -84,7 +84,7 @@ const userLogin = asyncHandler(async (req, res) => {
 
     const match = await argon2.verify(loginUser.password, user.password);
 
-    if (!match) return res.status(401).json({ message: 'Unauthorized: Wrong password' });
+    if (!match) return res.status(405).json({ message: 'Unauthorized: Wrong password' });
 
     const accessToken = generateAccessToken(loginUser);
     const refreshToken = generateRefreshToken(loginUser._id);

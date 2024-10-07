@@ -13,6 +13,8 @@ export class AuthComponent implements OnInit {
     title: String = '';
     isSubmitting = false;
     authForm: FormGroup;
+    errors: string[] = [];
+    user!: any;
 
     constructor(
         private route: ActivatedRoute,
@@ -22,8 +24,8 @@ export class AuthComponent implements OnInit {
         private cd: ChangeDetectorRef
     ) {
         this.authForm = this.fb.group({
-            'email': ['', Validators.required],
-            'password': ['', Validators.required]
+            'email': ['', [Validators.required, Validators.email]],
+            'password': ['', [Validators.required, Validators.minLength(6)]]
         });
     }
 
@@ -32,7 +34,7 @@ export class AuthComponent implements OnInit {
             this.authType = data[data.length - 1].path;
             this.title = (this.authType === 'login') ? 'Sign in' : 'Sign up';
             if (this.authType === 'register') {
-                this.authForm.addControl('username', new FormControl());
+                this.authForm.addControl('username', new FormControl('', Validators.required));
             }
             this.cd.markForCheck();
         });
@@ -40,15 +42,21 @@ export class AuthComponent implements OnInit {
 
     submitForm() {
         this.isSubmitting = true;
-        const credentials = this.authForm.value;
-        this.userService.attemptAuth(this.authType, credentials).subscribe(
-            () => {
+        this.errors = [];
+        this.user = this.authForm.value;
+        this.userService.attemptAuth(this.authType, this.user).subscribe({
+            next: () => {
                 this.router.navigateByUrl('/');
             },
-            err => {
+            error: (err: any) => {
+                this.errors = err.errors ? err.errors : [err.message || 'An error occurred'];
                 this.isSubmitting = false;
-                this.cd.markForCheck();
+                this.cd.detectChanges();
             }
-        );
+        });
     }
+
+    get email() { return this.authForm.get('email'); }
+    get password() { return this.authForm.get('password'); }
+    get username() { return this.authForm.get('username'); }
 }
