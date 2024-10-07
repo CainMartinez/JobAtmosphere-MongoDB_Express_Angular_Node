@@ -44,6 +44,7 @@ require('../routes/category.routes')(app);
 require('../routes/job.routes.js')(app);
 require('../routes/carousel.routes')(app);
 app.use('/profiles', require('../routes/profile.routes.js'));
+app.use(require('../routes/token.routes.js'));
 // require('../routes/comment.routes')(app);
 
 app.listen(process.env.PORT, () => {

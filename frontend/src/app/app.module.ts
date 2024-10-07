@@ -4,9 +4,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent, HeaderComponent, SharedModule } from './shared';
 import { CoreModule } from './core/core.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AuthModule } from './auth/auth.module';
+import { HttpTokenInterceptor } from './core/interceptors/http.token.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,9 +23,14 @@ import { AuthModule } from './auth/auth.module';
     HttpClientModule,
     CarouselModule.forRoot(),
     AuthModule
-
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,6 +9,7 @@ import { User } from '../core/models/user.model';
 @Component({
     selector: 'app-settings-page',
     templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsComponent implements OnInit {
