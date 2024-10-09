@@ -9,14 +9,16 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Confirmar datos
     if (!user || !user.email || !user.username || !user.password) {
-        return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        return res.status(400).json({ message: "All fields are mandatory" });
     }
-
-    const existingUser = await User.find({ $or: [{ email: user.email }, { username: user.username }] });
-    if (existingUser.length > 0) {
-        return res.status(409).json({ message: "Un usuario con este correo electrónico o nombre de usuario ya existe" });
+    const existingUsername = await User.findOne({ username: user.username });
+    if (existingUsername) {
+        return res.status(409).json({ message: "A user with this username already exists" });
     }
-
+    const existingEmail = await User.findOne({ email: user.email });
+    if (existingEmail) {
+        return res.status(409).json({ message: "A user with this email already exists" });
+    }
     // Hashear la contraseña
     const hashedPwd = await argon2.hash(user.password);
 
@@ -30,12 +32,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (createdUser) {
         res.status(201).json({
-            message: "Usuario registrado correctamente"
+            message: "User successfully registered"
         });
     } else {
         res.status(422).json({
             errors: {
-                body: "No se pudo registrar un usuario"
+                body: "Could not register a user"
             }
         });
     }
@@ -47,19 +49,19 @@ const userLogin = asyncHandler(async (req, res) => {
 
     // Confirmar datos
     if (!user || !user.email || !user.password) {
-        return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        return res.status(400).json({ message: "All fields are mandatory" });
     }
 
     const loginUser = await User.findOne({ email: user.email }).exec();
 
     if (!loginUser) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        return res.status(404).json({ message: "User not found" });
     }
 
     const match = await argon2.verify(loginUser.password, user.password);
 
     if (!match) {
-        return res.status(401).json({ message: 'No autorizado: Contraseña incorrecta' });
+        return res.status(401).json({ message: 'Unauthorised: Incorrect password' });
     }
 
     // Si el usuario tiene un refresh token existente, añadirlo a la blacklist si no está ya
@@ -84,7 +86,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email }).exec();
 
     if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({

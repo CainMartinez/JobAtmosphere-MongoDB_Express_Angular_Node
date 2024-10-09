@@ -16,32 +16,32 @@ const verifyJWT = async (req, res, next) => {
         // 1. Decodificar el accessToken sin verificar la firma
         const decodedAccessToken = jwt.decode(accessToken);
         if (!decodedAccessToken || !decodedAccessToken.user) {
-            return res.status(403).json({ message: 'Forbidden: Token inválido' });
+            return res.status(403).json({ message: 'Forbidden: Token invalid' });
         }
 
         // 2. Buscar al usuario en la base de datos
         const user = await User.findById(decodedAccessToken.user.id).exec();
         if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // 3. Verificar el refreshToken del usuario
         const refreshToken = user.refresh_token;
         if (!refreshToken) {
-            return res.status(401).json({ message: 'Unauthorized: Refresh token no encontrado' });
+            return res.status(401).json({ message: 'Unauthorized: Refresh token not found' });
         }
 
         // 4. Comprobar si el refreshToken está en la blacklist
         const tokenExistsInBlacklist = await Blacklist.findOne({ token: refreshToken }).exec();
         if (tokenExistsInBlacklist) {
-            return res.status(401).json({ message: 'Unauthorized: Refresh token inválido' });
+            return res.status(401).json({ message: 'Unauthorized: Refresh token invalid' });
         }
 
         // 5. Verificar el refreshToken
         try {
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         } catch (err) {
-            return res.status(401).json({ message: 'Unauthorized: Refresh token expirado' });
+            return res.status(401).json({ message: 'Unauthorized: Refresh token expired' });
         }
 
         // 6. Verificar el accessToken
@@ -59,7 +59,7 @@ const verifyJWT = async (req, res, next) => {
                         req.user = user;
                         next();
                     } catch (err) {
-                        return res.status(403).json({ message: 'Forbidden: No se pudo generar un nuevo access token' });
+                        return res.status(403).json({ message: 'Forbidden: Could not generate a new access token' });
                     }
                 } else {
                     // Si el accessToken es válido
@@ -71,7 +71,7 @@ const verifyJWT = async (req, res, next) => {
             }
         );
     } catch (error) {
-        return res.status(500).json({ message: 'Error interno del servidor' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 
@@ -89,13 +89,13 @@ const logoutUser = async (req, res) => {
         // 1. Decodificar el accessToken sin verificar la firma
         const decodedAccessToken = jwt.decode(accessToken);
         if (!decodedAccessToken || !decodedAccessToken.user) {
-            return res.status(403).json({ message: 'Forbidden: Token inválido' });
+            return res.status(403).json({ message: 'Forbidden: Token invalid' });
         }
 
         // 2. Buscar al usuario en la base de datos
         const user = await User.findById(decodedAccessToken.user.id).exec();
         if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // 3. Obtener el refreshToken del usuario y añadirlo a la blacklist
@@ -104,9 +104,9 @@ const logoutUser = async (req, res) => {
             await Blacklist.create({ token: refreshToken, userId: user._id });
         }
 
-        res.status(200).json({ message: 'Sesión cerrada exitosamente' });
+        res.status(200).json({ message: 'Session successfully closed' });
     } catch (error) {
-        return res.status(500).json({ message: 'Error interno del servidor' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 module.exports = {

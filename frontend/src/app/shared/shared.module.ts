@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from '../shared/search/search.component';
 import { FiltersComponent } from './filters/filters.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { ListErrorsComponent } from '../shared/list-errors/list-errors.component';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { PaginationComponent } from './pagination/pagination.component';
         CarouselComponent,
         FiltersComponent,
         SearchComponent,
-        PaginationComponent
+        PaginationComponent,
+        ListErrorsComponent
     ],
     exports: [
         FormsModule,
@@ -47,7 +49,8 @@ import { PaginationComponent } from './pagination/pagination.component';
         CarouselComponent,
         FiltersComponent,
         SearchComponent,
-        PaginationComponent
+        PaginationComponent,
+        ListErrorsComponent
     ],
 })
 export class SharedModule { }

@@ -1,53 +1,57 @@
-<div class="settings-page">
-<div class="container page">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-
-            <h1 class="text-xs-center">Your Settings</h1>
-            <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
-                <fieldset [disabled]="isSubmitting">
-
-                    <fieldset class="form-group">
-                        <input class="form-control" type="text" placeholder="URL of profile picture"
-                            formControlName="image" />
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="350px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <!-- <span class="font-weight-bold">{{ currentUser.username }}</span> -->
+                <!-- <span class="text-black-50">{{ currentUser.email }}</span> -->
+                <span> </span>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
+                    <fieldset [disabled]="isSubmitting">
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <label class="labels">URL of profile picture</label>
+                                <input class="form-control" type="text" placeholder="URL of profile picture" formControlName="image" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <label class="labels">Username</label>
+                                <input class="form-control form-control-lg" type="text" placeholder="Username" formControlName="username" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="labels">Short bio about you</label>
+                                <textarea class="form-control form-control-lg" rows="3" placeholder="Short bio about you" formControlName="bio"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="labels">Email</label>
+                                <input class="form-control form-control-lg" type="email" placeholder="Email" formControlName="email" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="labels">New Password</label>
+                                <input class="form-control form-control-lg" type="password" placeholder="New Password" formControlName="password" />
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center">
+                            <button class="btn btn-primary profile-button" type="submit">Update Settings</button>
+                            &nbsp;&nbsp;<button class="btn btn-danger" (click)="logout()">LOGOUT</button>
+                        </div>
                     </fieldset>
-
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" type="text" placeholder="Username"
-                            formControlName="username" />
-                    </fieldset>
-
-                    <fieldset class="form-group">
-                        <textarea class="form-control form-control-lg" rows="8" placeholder="Short bio about you"
-                            formControlName="bio">
-                </textarea>
-                    </fieldset>
-
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" type="email" placeholder="Email"
-                            formControlName="email" />
-                    </fieldset>
-
-                    <fieldset class="form-group">
-                        <input class="form-control form-control-lg" type="password" placeholder="New Password"
-                            formControlName="password" />
-                    </fieldset>
-
-                    <button class="btn btn-lg btn-primary pull-xs-right" type="submit">
-                        Update Settings
-                    </button>
-
-                </fieldset>
-            </form>
-
-            <!-- Line break for logout button -->
-            <hr />
-
-            <button class="btn btn-outline-danger" (click)="logout()">
-                Or click here to logout.
-            </button>
-
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
