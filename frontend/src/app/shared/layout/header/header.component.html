@@ -19,7 +19,12 @@
             <a class="nav-link" routerLink="shop">Shop</a>
           </li>
           <li class="nav-item" *ngIf="logged">
+            <a class="nav-link" routerLink="settings">Settings</a>
+          </li>
+          <li class="nav-item" *ngIf="logged">
             <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
+              <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="user-pic rounded-circle" style="width: 35px; height: 35px;" alt="user image" />
+              {{ currentUser.username }}
             </a>
           </li>
         </ul>
@@ -55,9 +60,8 @@
       </div>
       <!-- Avatar -->
       <div class="dropdown" *ngIf="logged">
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow nav-link" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="rounded-circle" height="25" alt="user image" loading="lazy" />
-          &nbsp; {{ currentUser.username }}
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
           <li>

@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const verifyJWTOptional = (req, res, next) => {
-    const authHeader = req.headers.authorization || req.headers.Authorization;
+    const authHeader = req.headers.authorization || req.headers.Authorization
 
-    if (!authHeader || !authHeader.startsWith('Bearer ') || !authHeader.split(' ')[1].length) {
+    if (!authHeader || !authHeader?.startsWith('Token ') || !authHeader.split(' ')[1].length) {
         req.loggedin = false;
         return next();
     }
@@ -18,11 +18,12 @@ const verifyJWTOptional = (req, res, next) => {
                 return res.status(403).json({ message: 'Forbidden' });
             }
             req.loggedin = true;
-            req.userId = decoded.id;
-            req.userEmail = decoded.email;
+            req.userId = decoded.user.id;
+            req.userEmail = decoded.user.email;
+            req.userHashedPwd = decoded.user.password;
             next();
         }
-    );
+    )
 };
 
 module.exports = verifyJWTOptional;

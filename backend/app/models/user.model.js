@@ -1,80 +1,111 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 const jwt = require("jsonwebtoken");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
-const userSchema = new mongoose.Schema({
-    uuid: {
-        type: String,
-        default: uuidv4,
-        unique: true
+const userSchema = new mongoose.Schema(
+    {
+        uuid: {
+            type: String,
+            default: uuidv4,
+            unique: true,
+        },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            lowercase: true,
+            unique: true,
+            match: [/\S+@\S+.\S+/, "is invalid"],
+            index: true,
+        },
+        bio: {
+            type: String,
+            default: "",
+        },
+        image: {
+            type: String,
+            default: "https://static.productionready.io/images/smiley-cyrus.jpg",
+        },
+        refresh_token: {
+            type: String,
+            default: "",
+        },
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        lowercase: true,
-        unique: true,
-        match: [/\S+@\S+\.\S+/, 'is invalid'],
-        index: true
-    },
-    bio: {
-        type: String,
-        default: ""
-    },
-    image: {
-        type: String,
-        default: "https://static.productionready.io/images/smiley-cyrus.jpg"
-    },
-    favouriteArticles: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
-    }],
-    followingUsers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }]
-},
-{
-    timestamps: true
-});
+    {
+        timestamps: true,
+    }
+);
 
 userSchema.plugin(uniqueValidator);
 
-// @desc generate access token for a user
-// @required valid email and password
-userSchema.methods.generateAccessToken = function() {
-    const accessToken = jwt.sign({
-            "user": {
-                "id": this._id,
-                "email": this.email,
-                "password": this.password
-            }
+userSchema.methods.generateAccessToken = function () {
+    const accessToken = jwt.sign(
+        {
+            user: {
+                id: this._id,
+                email: this.email,
+            },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1m"}
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION || "15m" } // Expiración corta (15 minutos)
     );
     return accessToken;
-}
+};
 
-userSchema.methods.toUserResponse = function() {
+// @desc generate refresh token for a user
+userSchema.methods.generateRefreshToken = function () {
+    const refreshToken = jwt.sign(
+        {
+            user: {
+                id: this._id,
+                email: this.email,
+            },
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION || "7d" } // Expiración larga (7 días)
+    );
+    return refreshToken;
+};
+
+//login user
+userSchema.methods.toUserResponse = function () {
+    const accessToken = this.generateAccessToken();
+    const refreshToken = this.generateRefreshToken();
+
+    // Almacenar el refresh token generado en la base de datos
+    this.refresh_token = refreshToken;
+    this.save(); // Guardar el refresh token en el modelo
+
     return {
         username: this.username,
         email: this.email,
         bio: this.bio,
         image: this.image,
-        token: this.generateAccessToken()
-    }
+        token: accessToken,
+        refresh_token: refreshToken,
+    };
 };
+
+//get Current User
+userSchema.methods.toUserDetails = function () {
+    return {
+        username: this.username,
+        email: this.email,
+        bio: this.bio,
+        image: this.image,
+    };
+};
+
 
 userSchema.methods.toProfileJSON = function (user) {
     return {
@@ -96,14 +127,14 @@ userSchema.methods.isFollowing = function (id) {
 };
 
 userSchema.methods.follow = function (id) {
-    if(this.followingUsers.indexOf(id) === -1){
+    if (this.followingUsers.indexOf(id) === -1) {
         this.followingUsers.push(id);
     }
     return this.save();
 };
 
 userSchema.methods.unfollow = function (id) {
-    if(this.followingUsers.indexOf(id) !== -1){
+    if (this.followingUsers.indexOf(id) !== -1) {
         this.followingUsers.remove(id);
     }
     return this.save();
@@ -120,7 +151,7 @@ userSchema.methods.isFavourite = function (id) {
 }
 
 userSchema.methods.favorite = function (id) {
-    if(this.favouriteArticles.indexOf(id) === -1){
+    if (this.favouriteArticles.indexOf(id) === -1) {
         this.favouriteArticles.push(id);
     }
 
@@ -134,7 +165,7 @@ userSchema.methods.favorite = function (id) {
 }
 
 userSchema.methods.unfavorite = function (id) {
-    if(this.favouriteArticles.indexOf(id) !== -1){
+    if (this.favouriteArticles.indexOf(id) !== -1) {
         this.favouriteArticles.remove(id);
     }
 
