@@ -3,29 +3,32 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require("dotenv");
 
-// create express app
+// Crear app de express
 const app = express();
 dotenv.config();
 
 // Habilita CORS para todas las rutas
-app.use(cors("http://localhost:4200"));
+var corsOptions = {
+   origin: "http://localhost:4200"
+};
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 
-// parse application/json
-app.use(bodyParser.json());
+// Parse peticiones de tipo application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// Configuring the database
+// Parse peticiones de tipo application/json
+app.use(bodyParser.json())
+
+// Configuracion de la base de datos
 const dbConfig = require('../config/database.config.js');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-// Connecting to the database
+// Conectar a la base de datos
 mongoose.connect(dbConfig.url, {
-   // useNewUrlParser: true,
-   // useUnifiedTopology: true
+   // useNewUrlParser: true
 }).then(() => {
    console.log("Successfully connected to the database");
 }).catch(err => {
@@ -33,19 +36,21 @@ mongoose.connect(dbConfig.url, {
    process.exit();
 });
 
-// Ruta de prueba
+// #region Ruta de prueba
 app.get('/', (req, res) => {
-   res.send('¡Está vivo!! Hola Mundo');
+   //Navegador ---> http://localhost:3000 para ver el mensaje
+   res.send('Hola Mundo');
 });
 
-// Registrar rutas
-app.use(require('../routes/user.routes.js'));
+// Importar rutas
 require('../routes/category.routes')(app);
 require('../routes/job.routes.js')(app);
 require('../routes/carousel.routes')(app);
-// app.use('/profiles', require('../routes/profile.routes.js'));
-// require('../routes/comment.routes')(app);
+require('../routes/user.routes')(app);
+require('../routes/profile.routes.js')(app);
+require('../routes/comment.routes.js')(app);
 
+// Encender el servidor
 app.listen(process.env.PORT, () => {
-   console.log(`Servidor Express en el puerto ${process.env.PORT}`);
+   console.log(`El Servidor Express en el puerto ${process.env.PORT}`);
 });

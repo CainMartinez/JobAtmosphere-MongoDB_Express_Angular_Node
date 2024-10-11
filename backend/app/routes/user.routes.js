@@ -1,22 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/user.controller');
-const { verifyJWT, logoutUser } = require('../middleware/verifyJWT');
-const verifyJWTOptional = require('../middleware/verifyJWTOptional');
+module.exports = (app) => {
+    const userController = require("../controllers/user.controller.js");
+    const { verifyJWT, logoutUser } = require("../middleware/verifyJWT");
 
-// Authentication
-router.post('/users/login', userController.userLogin);
-router.post('/users/logout', logoutUser);
+    // Authentication
+    app.post("/users/login", userController.userLogin);
 
-// Registration
-router.post('/users/register', userController.registerUser);
+    // Registration
+    app.post("/users/register", userController.registerUser);
 
-// Get Current User
-router.get('/user', verifyJWT, userController.getCurrentUser);
+    // Logout
+    app.post("/users/logout", logoutUser);
 
-// router.get('/user/profile:id', verifyJWTOptional, userController.getCurrentUser);
+    // Get Current User
+    app.get("/user", verifyJWT, userController.getCurrentUser);
 
-// Update User
-router.put('/user', verifyJWT, userController.updateUser);
-
-module.exports = router;
+    // Update User
+    app.put("/user", verifyJWT, userController.updateUser);
+};

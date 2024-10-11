@@ -34,12 +34,20 @@ const userSchema = new mongoose.Schema(
         },
         image: {
             type: String,
-            default: "https://static.productionready.io/images/smiley-cyrus.jpg",
+            default: "https://static.jobionready.io/images/smiley-cyrus.jpg",
         },
         refresh_token: {
             type: String,
             default: "",
         },
+        favouriteJob: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Job'
+        }],
+        following: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     },
     {
         timestamps: true,
@@ -106,18 +114,79 @@ userSchema.methods.toUserDetails = function () {
     };
 };
 
-
 userSchema.methods.toProfileJSON = function (user) {
     return {
         username: this.username,
         bio: this.bio,
         image: this.image,
-        following: user ? user.isFollowing(this._id) : false
+        // following: user ? user.isFollowing(this._id) : false
     }
 };
 
-userSchema.methods.isFollowing = function (id) {
+userSchema.methods.toProfileUnloggedJSON = function () {
+    return {
+        username: this.username,
+        bio: this.bio,
+        image: this.image
+    }
+};
+
+userSchema.methods.toSeeProfileUser = function (user_logged,followers,n_followers,follows,n_follows,jobs) {
+    if (user_logged){
+        return {
+            username: this.username,
+            bio: this.bio,
+            image: this.image,
+            followers: followers,
+            n_followers: n_followers,
+            follows: follows,
+            n_follows: n_follows,
+            following: user_logged.Following(this._id),
+            jobs: jobs
+        }
+    } else {
+        return {
+            username: this.username,
+            bio: this.bio,
+            image: this.image,
+            followers: followers,
+            n_followers: n_followers,
+            follows: follows,
+            n_follows: n_follows,
+            following: false,
+            jobs: jobs
+        }
+    }
+};
+
+userSchema.methods.isFavorite = function (id) {
     const idStr = id.toString();
+    for (const article of this.favouriteJob) {
+        if (article.toString() === idStr) {
+            return true;
+        }
+    }
+    return false;
+}
+
+userSchema.methods.favorite = function (id) {
+    if(this.favouriteJob.indexOf(id) === -1){
+        this.favouriteJob.push(id);
+    }
+    return this.save();
+}
+
+userSchema.methods.unfavorite = function (id) {
+    if(this.favouriteJob.indexOf(id) !== -1){
+        this.favouriteJob.remove(id);
+    }
+    return this.save();
+};
+
+userSchema.methods.Following = function (id) {
+    
+    const idStr = id.toString();
+    
     for (const followingUser of this.followingUsers) {
         if (followingUser.toString() === idStr) {
             return true;
@@ -127,54 +196,30 @@ userSchema.methods.isFollowing = function (id) {
 };
 
 userSchema.methods.follow = function (id) {
-    if (this.followingUsers.indexOf(id) === -1) {
+    if(this.followingUsers.indexOf(id) === -1){
         this.followingUsers.push(id);
     }
     return this.save();
 };
 
 userSchema.methods.unfollow = function (id) {
-    if (this.followingUsers.indexOf(id) !== -1) {
+    if(this.followingUsers.indexOf(id) !== -1){
         this.followingUsers.remove(id);
     }
     return this.save();
 };
 
-userSchema.methods.isFavourite = function (id) {
-    const idStr = id.toString();
-    for (const article of this.favouriteArticles) {
-        if (article.toString() === idStr) {
-            return true;
-        }
+userSchema.methods.addFollower = function (id) {
+    if(this.followersUsers.indexOf(id) === -1){
+        this.followersUsers.push(id);
     }
-    return false;
-}
-
-userSchema.methods.favorite = function (id) {
-    if (this.favouriteArticles.indexOf(id) === -1) {
-        this.favouriteArticles.push(id);
-    }
-
-    // const article = await Article.findById(id).exec();
-    //
-    // article.favouritesCount += 1;
-    //
-    // await article.save();
-
     return this.save();
-}
+};
 
-userSchema.methods.unfavorite = function (id) {
-    if (this.favouriteArticles.indexOf(id) !== -1) {
-        this.favouriteArticles.remove(id);
+userSchema.methods.removeFollower = function (id) {
+    if(this.followersUsers.indexOf(id) !== -1){
+        this.followersUsers.remove(id);
     }
-
-    // const article = await Article.findById(id).exec();
-    //
-    // article.favouritesCount -= 1;
-    //
-    // await article.save();
-
     return this.save();
 };
 
