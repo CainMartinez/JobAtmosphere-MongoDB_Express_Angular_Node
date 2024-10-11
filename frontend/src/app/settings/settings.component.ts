@@ -41,8 +41,24 @@ export class SettingsComponent implements OnInit {
     }
 
     logout() {
-        this.userService.logout();
-        this.router.navigateByUrl('/');
+        this.userService.logout().subscribe({
+            next: () => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Logged out successfully',
+                    text: 'See you soon!'
+                }).then(() => {
+                    this.router.navigateByUrl('/');
+                });
+            },
+            error: (err) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Logout failed',
+                    text: 'Please try again later.'
+                });
+            }
+        });
     }
 
     submitForm() {
