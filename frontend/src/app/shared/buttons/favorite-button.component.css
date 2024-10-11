@@ -1,0 +1,40 @@
+.favorite-btn {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1.5px solid #d3d3d3; /* light grey */
+    color: #000000;
+    width: 20%;
+    height: auto;
+    box-shadow: 0px 0px 5px #d3d3d3; /* light grey */
+    transition: background-color 0.3s, transform 0.3s;
+    transform: scale(1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.favorite-btn .fa-star {
+    margin-left: 5px;
+    color: #d3d3d3; /* light grey */
+    transition: color 0.3s;
+}
+
+.favorite-btn {
+    color: #ff657c; /* red */
+}
+
+.favorite-btn:hover {
+    background-color: #adbce6;
+    transform: scale(1.05);
+}
+
+.favorite-btn.favorited {
+    background-color: #ff657c;
+    color: #ffffff;
+}
+
+.favorite-btn.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

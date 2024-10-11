@@ -19,7 +19,7 @@ export class JobService {
     get_jobs(): Observable<Job[]> {
         return this.http.get<Job[]>(`${this.apiUrl}/jobs`);
     }
-    
+
     //GET ONE
     get_job(slug: String): Observable<Job> {
         return this.http.get<Job>(`${this.apiUrl}/jobs/${slug}`);
@@ -49,15 +49,25 @@ export class JobService {
     //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
     // }
 
-    getJobsByCategory(slug: string): Observable<any> {
+    getJobsByCategory(slug: String): Observable<Job[]> {
         return this.http.get<any>(`${this.apiUrl}/categories/${slug}/jobs`);
     }
     //SEARCH
     find_job_name(search: string): Observable<any> {
         return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
             map((data) => {
-            return data;
+                return data;
             })
         );
+    }
+
+    //FAVORITE
+    favorite(id: String): Observable<any> {
+        return this.http.post(`${this.apiUrl}/${id}/favorite`, {})
+    }
+
+    //UNFAVORITE
+    unfavorite(id: String): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/${id}/favorite`)
     }
 }

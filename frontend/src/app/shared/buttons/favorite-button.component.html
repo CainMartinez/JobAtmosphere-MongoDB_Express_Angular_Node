@@ -1,0 +1,4 @@
+<button class="btn favorite-btn" [ngClass]="{ 'disabled' : isSubmitting, 'favorited': jobs.favorited }" (click)="toggleFavorite()">
+    <i class="fas fa-star" [ngClass]="{ 'starred': jobs.favorited }"></i>
+    <ng-content></ng-content>
+</button>

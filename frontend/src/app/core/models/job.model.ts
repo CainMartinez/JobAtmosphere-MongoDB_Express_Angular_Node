@@ -4,7 +4,9 @@ export interface Job {
     salary: number;
     description: string;
     company: string;
-    images: string[];
-    img: string;
+    images: [],
+    img: string,
     id_cat: string;
+    favorited: boolean;
+    favoritesCount: number;
 }

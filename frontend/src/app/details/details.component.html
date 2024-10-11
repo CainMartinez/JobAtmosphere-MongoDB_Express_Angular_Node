@@ -1,14 +1,18 @@
-    <div class="container mt-5 details_page">
-        <div *ngIf="!job" class="alert alert-warning text-center">No job found</div>
-        <div class="job card mb-3" *ngIf="job">
-            <div class="card-header">
-                <app-carousel></app-carousel>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">{{job.name}}</h3>
-                <h4 class="card-subtitle mb-2 text-muted">{{job.company}}</h4>
-                <p class="card-text"><strong>Description: </strong>{{job.description}}</p>
-                <p class="card-text"><strong>Salary: </strong>{{job.salary}}€</p>
-            </div>
+<div class="container mt-5 details_page">
+    <div *ngIf="!job" class="alert alert-warning text-center">No job found</div>
+    <div class="job card mb-3" *ngIf="job">
+        <div class="card-header">
+            <app-carousel></app-carousel>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{job.name}}</h3>
+            <h4 class="card-subtitle mb-2 text-muted">{{job.company}}</h4>
+            <p class="card-text"><strong>Description: </strong>{{job.description}}</p>
+            <p class="card-text"><strong>Salary: </strong>{{job.salary}}€</p>
+            <app-favorite-button [jobs]="job" (toggle)="onToggleFavorite($event)">
+                {{ job.favorited ? 'Unfavorite' : 'Favorite' }} <span class="counter"> ( {{
+                    job.favoritesCount }} )</span>
+            </app-favorite-button>
         </div>
     </div>
+</div>

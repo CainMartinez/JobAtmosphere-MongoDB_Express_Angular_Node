@@ -15,6 +15,7 @@ import { SearchComponent } from '../shared/search/search.component';
 import { FiltersComponent } from './filters/filters.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ListErrorsComponent } from '../shared/list-errors/list-errors.component';
+import { FavoriteButtonComponent } from './buttons/favorite-button.component';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { ListErrorsComponent } from '../shared/list-errors/list-errors.component
         FiltersComponent,
         SearchComponent,
         PaginationComponent,
-        ListErrorsComponent
+        ListErrorsComponent,
+        FavoriteButtonComponent
     ],
     exports: [
         FormsModule,
@@ -50,7 +52,8 @@ import { ListErrorsComponent } from '../shared/list-errors/list-errors.component
         FiltersComponent,
         SearchComponent,
         PaginationComponent,
-        ListErrorsComponent
+        ListErrorsComponent,
+        FavoriteButtonComponent
     ],
 })
 export class SharedModule { }

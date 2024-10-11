@@ -47,7 +47,7 @@ require('../routes/category.routes')(app);
 require('../routes/job.routes.js')(app);
 require('../routes/carousel.routes')(app);
 require('../routes/user.routes')(app);
-require('../routes/profile.routes.js')(app);
+// require('../routes/profile.routes.js')(app);
 require('../routes/comment.routes.js')(app);
 
 // Encender el servidor
