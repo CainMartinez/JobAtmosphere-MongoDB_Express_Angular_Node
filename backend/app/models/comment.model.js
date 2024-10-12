@@ -15,31 +15,25 @@ const commentSchema = new mongoose.Schema({
         ref: 'Job'
     }
 },
-    {
-        timestamps: true
-    });
-
+{
+    timestamps: true
+});
 
 commentSchema.methods.toCommentResponse = async function (user) {
-    const authorObj = await User.findById(this.author).exec();
-    if (user !== null) {
-        return {
-            id: this._id,
-            body: this.body,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-            author: authorObj.toProfileJSON(user)
+    const author = await User.findById(this.author).exec();
+    return {
+        id: this._id,
+        body: this.body,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt,
+        author: {
+            email: author.email,
+            token: author.token,
+            username: author.username,
+            bio: author.bio,
+            image: author.image
         }
-    }
-    else {
-        return {
-            id: this._id,
-            body: this.body,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-            author: authorObj.toProfileUnloggedJSON()
-        }
-    }
-}
+    };
+};
 
 module.exports = mongoose.model('Comment', commentSchema);

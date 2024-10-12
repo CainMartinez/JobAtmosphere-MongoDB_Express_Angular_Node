@@ -9,4 +9,5 @@ export interface Job {
     id_cat: string;
     favorited: boolean;
     favoritesCount: number;
+    comments: [];
 }

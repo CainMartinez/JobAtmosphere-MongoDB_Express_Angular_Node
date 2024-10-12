@@ -1,0 +1,10 @@
+<div *ngIf="!hasWrittenComment()">
+    <button class="btn btn-info mt-3" (click)="showCommentForm()">Add Comment</button>
+</div>
+<div *ngFor="let comment of comments">
+    <br><br><h3>{{ comment.author.username }}:</h3><hr> <p>{{ comment.body }}</p>
+    <button class="btn btn-danger mt-3" *ngIf="canModify(comment)" (click)="deleteClicked(comment)">Delete</button>
+</div>
+<div *ngIf="isAddingComment">
+    <app-form-comment [slug]="slug" (submitComment)="onCommentSubmitted()"></app-form-comment>
+</div>

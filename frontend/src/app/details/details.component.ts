@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Job } from '../core/models/job.model';
 import { JobService } from '../core/services/job.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgControlStatusGroup } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import { Comment } from '../core/models/comment.model';
+
 @Component({
     selector: 'app-details',
     templateUrl: './details.component.html',
@@ -12,29 +12,36 @@ import { FormControl } from '@angular/forms';
 export class DetailsComponent implements OnInit {
     job!: Job;
     slug!: string | null;
+    selectedComment!: Comment | null;
+
     constructor(
-        private JobService: JobService,
-        private ActivatedRoute: ActivatedRoute,
+        private jobService: JobService,
+        private activatedRoute: ActivatedRoute,
         private router: Router
-    )
-    { }
+    ) { }
+
     ngOnInit(): void {
-        this.slug = this.ActivatedRoute.snapshot.paramMap.get('slug');
-        console.log(this.slug);
-        this.get_job();
+        this.slug = this.activatedRoute.snapshot.paramMap.get('slug');
+        this.getJob();
     }
-    get_job() {
+
+    getJob() {
         if (typeof this.slug === 'string') {
-            this.JobService.get_job(this.slug).subscribe((data: any) => {
+            this.jobService.get_job(this.slug).subscribe((data: any) => {
                 this.job = data.jobs;
-                console.log(this.job);
             });
         } else {
-            console.log('fallo al encontrar el job');
             this.router.navigate(['/']);
         }
     }
 
+    onEditComment(comment: Comment) {
+        this.selectedComment = comment;
+    }
+
+    onSubmitComment() {
+        this.selectedComment = null;
+    }
     onToggleFavorite(favorited: boolean) {
         this.job.favorited = favorited;
 

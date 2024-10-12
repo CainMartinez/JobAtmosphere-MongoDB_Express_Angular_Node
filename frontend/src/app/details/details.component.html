@@ -9,6 +9,14 @@
             <h4 class="card-subtitle mb-2 text-muted">{{job.company}}</h4>
             <p class="card-text"><strong>Description: </strong>{{job.description}}</p>
             <p class="card-text"><strong>Salary: </strong>{{job.salary}}€</p>
+            <div id="comments_list">
+                <h2 align="center">Comments</h2>
+                <app-list-comment [slug]="slug ?? ''" (editComment)="onEditComment($event)">
+                </app-list-comment>
+                <app-form-comment *ngIf="selectedComment" [slug]="slug ?? ''" [comment]="selectedComment"
+                    (submitComment)="onSubmitComment()">
+                </app-form-comment>
+            </div>
             <app-favorite-button [jobs]="job" (toggle)="onToggleFavorite($event)">
                 {{ job.favorited ? 'Unfavorite' : 'Favorite' }} <span class="counter"> ( {{
                     job.favoritesCount }} )</span>

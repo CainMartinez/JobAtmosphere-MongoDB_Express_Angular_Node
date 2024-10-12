@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { DetailsComponent } from './details.component';
 import { DetailsRoutingModule } from './details-routing.module';
-
 import { SharedModule } from '../shared';
+import { FormCommentComponent } from './form-comment/form-comment.component';
+import { ListCommentComponent } from './list-comment/list-comment.component';
 
 @NgModule({
     imports: [
@@ -13,7 +13,9 @@ import { SharedModule } from '../shared';
         DetailsRoutingModule, 
     ],
     declarations: [
-        DetailsComponent
+        DetailsComponent,
+        FormCommentComponent,
+        ListCommentComponent
     ],
     providers: [
     ],
