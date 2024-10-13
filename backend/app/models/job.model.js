@@ -103,7 +103,7 @@ JobSchema.methods.updateFavoriteCount = async function () {
 
 // #region COMMENTS
 JobSchema.methods.addComment = function(commentId) {
-    this.comments.push(commentId);
+    this.comments.unshift(commentId);
     return this.save();
 };
 

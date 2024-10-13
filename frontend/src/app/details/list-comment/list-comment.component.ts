@@ -18,8 +18,10 @@ export class ListCommentComponent implements OnInit, OnDestroy {
     @Output() createCommentEvent = new EventEmitter<void>();
 
     subscription!: Subscription;
+    authSubscription!: Subscription;
     currentUser!: User;
     isAddingComment: boolean = false;
+    isAuthenticated: boolean = false;
 
     constructor(
         private userService: UserService,
@@ -35,10 +37,17 @@ export class ListCommentComponent implements OnInit, OnDestroy {
                 this.cd.markForCheck();
             }
         );
+        this.authSubscription = this.userService.isAuthenticated.subscribe(
+            (isAuthenticated: boolean) => {
+                this.isAuthenticated = isAuthenticated;
+                this.cd.markForCheck();
+            }
+        );
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.authSubscription.unsubscribe();
     }
 
     loadComments() {

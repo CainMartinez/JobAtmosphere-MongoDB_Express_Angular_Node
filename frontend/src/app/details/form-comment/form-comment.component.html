@@ -1,4 +1,7 @@
 <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
     <textarea formControlName="body" placeholder="Write a comment..."></textarea>
+    <div *ngIf="commentForm.controls['body'].hasError('maxlength')">
+        <small class="text-danger">Comment cannot exceed 140 characters.</small>
+    </div>
     <button class="btn btn-primary mt-3" type="submit" [disabled]="commentForm.invalid">Submit</button>
 </form>

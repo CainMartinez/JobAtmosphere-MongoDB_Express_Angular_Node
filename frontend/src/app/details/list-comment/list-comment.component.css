@@ -1,40 +1,20 @@
-/* Estilo para el formulario de comentarios */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.testimonial-card .card-up {
+    height: 120px;
+    overflow: hidden;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+
+}
+
+.testimonial-card {
+    margin-bottom: 40px;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
 }
 
-/* Estilo para el textarea */
-textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: vertical;
-}
-
-/* Estilo para el botón de submit */
-button {
-    width: 20%;
-    padding: 10px;
-    font-size: 1em;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-/* Estilo para el botón de submit cuando está deshabilitado */
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.testimonial-card .avatar {
+    width: 110px;
+    margin-top: -60px;
+    overflow: hidden;
+    border: 3px solid #fff;
+    border-radius: 50%;
 }
