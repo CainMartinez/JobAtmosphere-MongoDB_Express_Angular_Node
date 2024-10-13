@@ -3,35 +3,34 @@ const uniqueValidator = require("mongoose-unique-validator");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
-// #region SCHEMA
 const userSchema = new mongoose.Schema(
     {
         uuid: {
             type: String,
             default: uuidv4,
-            unique: true
+            unique: true,
         },
         username: {
             type: String,
             required: true,
             unique: true,
-            lowercase: true
+            lowercase: true,
         },
         password: {
             type: String,
-            required: true
+            required: true,
         },
         email: {
             type: String,
             required: true,
             lowercase: true,
             unique: true,
-            match: [/\S+@\S+\.\S+/, "is invalid"],
-            index: true
+            match: [/\S+@\S+.\S+/, "is invalid"],
+            index: true,
         },
         bio: {
             type: String,
-            default: ""
+            default: "",
         },
         image: {
             type: String,
@@ -39,9 +38,9 @@ const userSchema = new mongoose.Schema(
         },
         refresh_token: {
             type: String,
-            default: ""
+            default: "",
         },
-        favouriteJob: [{
+        favoriteJob: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Job"
         }],
@@ -51,13 +50,19 @@ const userSchema = new mongoose.Schema(
         }]
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 );
 
+userSchema.pre('save', function (next) {
+    if (!this.image) {
+        this.image = `https://i.pravatar.cc/150?u=${this.username}`;
+    }
+    next();
+});
+
 userSchema.plugin(uniqueValidator);
 
-// #region METHODS
 userSchema.methods.generateAccessToken = function () {
     const accessToken = jwt.sign(
         {
@@ -72,13 +77,6 @@ userSchema.methods.generateAccessToken = function () {
     return accessToken;
 };
 
-userSchema.pre('save', function (next) {
-    if (!this.image) {
-        this.image = `https://i.pravatar.cc/150?u=${this.username}`;
-    }
-    next();
-});
-
 userSchema.methods.generateRefreshToken = function () {
     const refreshToken = jwt.sign(
         {
@@ -88,12 +86,11 @@ userSchema.methods.generateRefreshToken = function () {
             },
         },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION || "1d" }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION || "7d" }
     );
     return refreshToken;
 };
 
-// #region TO USER RESPONSE
 userSchema.methods.toUserResponse = function () {
     const accessToken = this.generateAccessToken();
     const refreshToken = this.generateRefreshToken();
@@ -111,30 +108,59 @@ userSchema.methods.toUserResponse = function () {
     };
 };
 
-// #region TO USER DETAILS
 userSchema.methods.toUserDetails = function () {
     return {
         username: this.username,
         email: this.email,
         bio: this.bio,
         image: this.image,
+        favoriteJob: this.favoriteJob,
+        following: this.following,
     };
 };
 
-// #region TO PROFILE JSON
-userSchema.methods.toProfileJSON = function (user) {
+// #region PROFILE
+userSchema.methods.toProfileUser = async function () {
+    const Job = require("./job.model"); // Lazy load del modelo Job
+    const favoriteJobs = await Job.find({ _id: { $in: this.favoriteJob } }).exec();
+
     return {
         username: this.username,
+        email: this.email,
         bio: this.bio,
         image: this.image,
-        // following: user ? user.isFollowing(this._id) : false,
+        favoriteJobs: await Promise.all(favoriteJobs.map(async job => await job.toJobProfileResponse(this))),
     };
 };
 
-// #region FAVORITE JOB
+
+userSchema.methods.isFollowing = function (id) {
+    const idStr = id.toString();
+    for (const followingUser of this.followingUsers) {
+        if (followingUser.toString() === idStr) {
+            return true;
+        }
+    }
+    return false;
+};
+
+// userSchema.methods.follow = function (id) {
+//      if (this.followingUsers.indexOf(id) === -1) {
+//           this.followingUsers.push(id);
+//      }
+//      return this.save();
+// };
+
+// userSchema.methods.unfollow = function (id) {
+//      if (this.followingUsers.indexOf(id) !== -1) {
+//           this.followingUsers.remove(id);
+//      }
+//      return this.save();
+// };
+
 userSchema.methods.isFavorite = function (id) {
     const idStr = id.toString();
-    for (const job of this.favouriteJob) {
+    for (const job of this.favoriteJob) {
         if (job.toString() === idStr) {
             return true;
         }
@@ -142,19 +168,18 @@ userSchema.methods.isFavorite = function (id) {
     return false;
 }
 
-
 userSchema.methods.favorite = function (id) {
-    if (this.favouriteJob.indexOf(id) === -1) {
-        this.favouriteJob.push(id);
+    if (this.favoriteJob.indexOf(id) === -1) {
+        this.favoriteJob.push(id);
     }
     return this.save();
 }
 
 userSchema.methods.unfavorite = function (id) {
-    if (this.favouriteJob.indexOf(id) !== -1) {
-        this.favouriteJob.remove(id);
+    if (this.favoriteJob.indexOf(id) !== -1) {
+        this.favoriteJob.remove(id);
     }
     return this.save();
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

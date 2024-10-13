@@ -9,16 +9,22 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // Confirmar datos
     if (!user || !user.email || !user.username || !user.password) {
-        return res.status(400).json({ message: "All fields are mandatory" });
+        return res.status(400).json({ message: "All fields are required." });
     }
+
+    // Comprobar si el nombre de usuario ya existe
     const existingUsername = await User.findOne({ username: user.username });
     if (existingUsername) {
-        return res.status(409).json({ message: "A user with this username already exists" });
+        return res.status(409).json({ message: "This username already exists." });
     }
+
+    // Comprobar si el correo electrónico ya existe
     const existingEmail = await User.findOne({ email: user.email });
     if (existingEmail) {
-        return res.status(409).json({ message: "A user with this email already exists" });
+        return res.status(409).json({ message: "This email already exists." });
     }
+
+
     // Hashear la contraseña
     const hashedPwd = await argon2.hash(user.password);
 
@@ -49,19 +55,19 @@ const userLogin = asyncHandler(async (req, res) => {
 
     // Confirmar datos
     if (!user || !user.email || !user.password) {
-        return res.status(400).json({ message: "All fields are mandatory" });
+        return res.status(400).json({ message: "All fields are required." });
     }
 
     const loginUser = await User.findOne({ email: user.email }).exec();
 
     if (!loginUser) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "Usser not found." });
     }
 
     const match = await argon2.verify(loginUser.password, user.password);
 
     if (!match) {
-        return res.status(401).json({ message: 'Unauthorised: Incorrect password' });
+        return res.status(401).json({ message: 'Unauthorized: wrong password.' });
     }
 
     // Si el usuario tiene un refresh token existente, añadirlo a la blacklist si no está ya
@@ -94,6 +100,22 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     });
 });
 
+
+const getProfileUser = asyncHandler(async (req, res) => {
+    const email = req.userEmail;
+
+    const user = await User.findOne({ email }).exec();
+
+    if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const profileUser = await user.toProfileUser();
+
+    res.status(200).json({
+        user: profileUser,
+    });
+});
 
 // Actualizar usuario
 const updateUser = asyncHandler(async (req, res) => {
@@ -135,5 +157,6 @@ module.exports = {
     registerUser,
     getCurrentUser,
     userLogin,
-    updateUser
+    updateUser,
+    getProfileUser
 };

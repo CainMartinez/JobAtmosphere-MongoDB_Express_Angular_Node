@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const slugify = require("slugify");
-const uniqueValidator = require("mongoose-unique-validator");
-const User = require("../models/user.model.js");
-const { log } = require("console");
+const mongoose = require('mongoose');
+const slugify = require('slugify');
+const uniqueValidator = require('mongoose-unique-validator');
+const User = require('../models/user.model.js');
+const { log } = require('console');
 
-// #region SCHEMA
 const JobSchema = mongoose.Schema({
     slug: {
         type: String,
@@ -43,14 +42,13 @@ const JobSchema = mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }, 
+    },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }]
 });
 
-// #region PLUGINS
 JobSchema.plugin(uniqueValidator, { msg: "already taken" });
 
 JobSchema.pre('validate', async function (next) {
@@ -62,9 +60,8 @@ JobSchema.pre('validate', async function (next) {
     next();
 });
 
-// #region SLUGIFY
 JobSchema.methods.slugify = async function () {
-    this.slug = slugify(this.name) + '-' + ((Math.random() * Math.pow(36, 10)) | 0).toString(36);
+    this.slug = slugify(this.name) + '-' + (Math.random() * Math.pow(36, 10) | 0).toString(36);
 };
 
 // #region JOB RESPONSE
@@ -86,6 +83,15 @@ JobSchema.methods.toJobResponse = async function (user) {
     };
 };
 
+JobSchema.methods.toJobProfileResponse = async function (user) {
+    return {
+        name: this.name,
+        company: this.company,
+        img: this.img,
+        slug: this.slug
+    };
+};
+
 // #region CAROUSEL RESPONSE
 JobSchema.methods.toJobCarouselResponse = async function () {
     return {
@@ -96,18 +102,19 @@ JobSchema.methods.toJobCarouselResponse = async function () {
 // #region FAVORITES
 JobSchema.methods.updateFavoriteCount = async function () {
     const job = this;
-    const count = await User.countDocuments({ favouriteJob: job._id }).exec();
+    const count = await User.countDocuments({ favoriteJob: job._id }).exec();
     job.favoritesCount = count;
     return job.save();
 };
 
+
 // #region COMMENTS
-JobSchema.methods.addComment = function(commentId) {
-    this.comments.unshift(commentId);
+JobSchema.methods.addComment = function (commentId) {
+    this.comments.push(commentId);
     return this.save();
 };
 
-JobSchema.methods.removeComment = function(commentId) {
+JobSchema.methods.removeComment = function (commentId) {
     this.comments.pull(commentId);
     return this.save();
 };

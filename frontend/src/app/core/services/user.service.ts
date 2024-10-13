@@ -73,7 +73,14 @@ export class UserService {
             })
         );
     }
-
+    getUserProfile(): Observable<User> {
+        return this.apiService.get('/user/profile').pipe(
+            map((data: any) => {
+                this.currentUserSubject.next(data.user);
+                return data.user;
+            })
+        );
+    }
     logout(): Observable<void> {
         return this.apiService.post('/users/logout', {}).pipe(
             map(() => {

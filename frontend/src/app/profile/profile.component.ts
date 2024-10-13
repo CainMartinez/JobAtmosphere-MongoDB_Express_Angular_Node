@@ -1,21 +1,24 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { UserService } from '../core/services/user.service';
 import { User } from '../core/models/user.model';
 import Swal from 'sweetalert2';
 
 @Component({
-    selector: 'app-settings-page',
-    templateUrl: './settings.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-profile-page',
+    templateUrl: './profile.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./profile.component.css']
+
 })
-export class SettingsComponent implements OnInit {
+export class ProfileComponent implements OnInit {
     user: User = {} as User;
-    settingsForm: FormGroup;
+    profileForm: FormGroup;
     errors: Object = {};
     isSubmitting = false;
+    showSettings = false;
+    buttonText = 'Settings';
 
     constructor(
         private router: Router,
@@ -24,7 +27,7 @@ export class SettingsComponent implements OnInit {
         private cd: ChangeDetectorRef
     ) {
         // create form group using the form builder
-        this.settingsForm = this.fb.group({
+        this.profileForm = this.fb.group({
             image: '',
             username: '',
             bio: '',
@@ -34,10 +37,31 @@ export class SettingsComponent implements OnInit {
     }
 
     ngOnInit() {
-        // Make a fresh copy of the current user's object to place in editable form fields
-        Object.assign(this.user, this.userService.getCurrentUser());
-        // Fill the form
-        this.settingsForm.patchValue(this.user);
+        // Obtener el perfil del usuario desde el servicio
+        this.userService.getUserProfile().subscribe({
+            next: (userProfile) => {
+                // Asignar los datos del perfil del usuario
+                this.user = userProfile;
+                // Asegúrate de que favoriteJobs sea un array
+                this.user.favoriteJobs = this.user.favoriteJobs || [];
+                // Rellenar el formulario con los datos del usuario
+                this.profileForm.patchValue(this.user);
+                // Forzar la detección de cambios
+                this.cd.detectChanges();
+            },
+            error: (err) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load user profile. Please try again later.'
+                });
+            }
+        });
+    }
+
+    toggleSettings() {
+        this.showSettings = !this.showSettings;
+        this.buttonText = this.showSettings ? 'Details' : 'Settings';
     }
 
     logout() {
@@ -65,14 +89,14 @@ export class SettingsComponent implements OnInit {
         this.isSubmitting = true;
 
         // update the model
-        this.updateUser(this.settingsForm.value);
+        this.updateUser(this.profileForm.value);
 
         this.userService.update(this.user).subscribe({
             next: (updatedUser) => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
-                    text: 'Settings successfully updated'
+                    text: 'Profile successfully updated'
                 }).then(() => {
                     this.router.navigateByUrl('/home');
                 });

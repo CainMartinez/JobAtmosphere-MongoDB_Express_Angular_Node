@@ -1,0 +1,95 @@
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="col col-lg-9 col-xl-8">
+                <div class="card">
+                    <div class="rounded-top text-white d-flex flex-row" style="background-color: #3d6162; height:200px;">
+                        <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                            <img [src]="user.image || 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'"
+                                alt="{{ user.username }}" class="img-fluid img-thumbnail mt-4 mb-2"
+                                style="width: 150px; z-index: 1">
+                            <button type="button" class="btn btn-outline-info text-body" (click)="toggleSettings()"
+                                style="z-index: 1;">
+                                {{ buttonText }}
+                            </button>
+                        </div>
+                        <div class="ms-3" style="margin-top: 130px;">
+                            <h5>{{ user.username }}</h5>
+                        </div>
+                    </div>
+                    <div *ngIf="!showSettings" class="p-4 text-black bg-body-tertiary">
+                    </div>
+                    <div *ngIf="!showSettings" class="card-body p-4 text-black">
+                        <div class="mb-5 text-body">
+                            <p class="lead fw-normal mb-1">About me</p>
+                            <div class="p-4 bg-body-tertiary">
+                                <p class="font-italic mb-0">{{ user.bio }}</p>
+                            </div>
+                        </div>
+                        <div class="mb-5 text-body">
+                            <p class="lead fw-normal mb-1">Email</p>
+                            <div class="p-4 bg-body-tertiary">
+                                <p class="font-italic mb-0">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+                            <p class="lead fw-normal mb-0">Favorite Jobs</p>
+                        </div>
+                        <p *ngIf="user.favoriteJobs.length === 0">You have not added any work to your favourites list.</p>
+                        <div *ngIf="user.favoriteJobs.length > 0">
+                            <app-card-job *ngFor="let job of user.favoriteJobs" [job]="job"></app-card-job>
+                        </div>
+                    </div>
+                    <div *ngIf="showSettings" class="card-body p-4 text-black">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <br><br><br><h4 class="text-right">Profile settings</h4>
+                        </div>
+                        <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
+                            <fieldset [disabled]="isSubmitting">
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <label class="labels">URL of profile picture</label>
+                                        <input class="form-control" type="text" placeholder="URL of profile picture"
+                                            formControlName="image" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <label class="labels">Username</label>
+                                        <input class="form-control form-control-lg" type="text" placeholder="Username"
+                                            formControlName="username" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label class="labels">Short bio about you</label>
+                                        <textarea class="form-control form-control-lg" rows="3"
+                                            placeholder="Short bio about you" formControlName="bio"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label class="labels">Email</label>
+                                        <input class="form-control form-control-lg" type="email" placeholder="Email"
+                                            formControlName="email" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label class="labels">New Password</label>
+                                        <input class="form-control form-control-lg" type="password"
+                                            placeholder="New Password" formControlName="password" />
+                                    </div>
+                                </div>
+                                <div class="mt-5 text-center">
+                                    <button class="btn btn-primary profile-button" type="submit">Update profile</button>
+                                    &nbsp;&nbsp;<button class="btn btn-danger" (click)="logout()">LOGOUT</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

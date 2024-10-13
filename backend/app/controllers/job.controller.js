@@ -189,7 +189,7 @@ const deleteOneJob = asyncHandler(async (req, res) => {
 });
 
 // #region FAVORITOS
-const favouriteJob = asyncHandler(async (req, res) => {
+const favoriteJob = asyncHandler(async (req, res) => {
     const id = req.userId;
     const { slug } = req.params;
     const loginUser = await User.findById(id).exec();
@@ -241,6 +241,6 @@ module.exports = {
     deleteOneJob,
     GetjobsByCategory,
     updateJob,
-    favouriteJob,
+    favoriteJob,
     unfavoriteJob,
 };
