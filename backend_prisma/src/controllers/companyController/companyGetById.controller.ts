@@ -3,9 +3,9 @@ import companyListOnePrisma from "../../utils/db/company/companyListOnePrisma";
 import companyViewer from "../../view/companyViewer";
 
 /**
- * Article controller that must receive a request.
- * The parameters of the request must have a slug.
- * @param req Request with a an optional jwt token verified
+ * Company controller that must receive a request.
+ * The parameters of the request must have an id.
+ * @param req Request with an optional jwt token verified
  * @param res Response
  * @param next NextFunction
  * @returns void
