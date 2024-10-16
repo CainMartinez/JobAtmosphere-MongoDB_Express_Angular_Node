@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model jobs {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  salary          Int
+  description     String
+  company         String
+  images          String[]
+  img             String
+  id_cat          String   @db.ObjectId
+  slug            String   @unique(map: "slug_1")
+  v               Int      @map("__v")
+  comments        Json[]
+  favouritesCount Int      @default(0)
+}
+
+model users {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  username        String   @unique
+  password        String
+  email           String   @unique
+  bio             String?
+  image           String?
+  refresh_token   String?
+  uuid            String   @unique
+  createdAt       DateTime @db.Date
+  updatedAt       DateTime @db.Date
+  v               Int      @map("__v")
+  favouriteJob    String[] @db.ObjectId
+  following       String[] @db.ObjectId
+  favoriteJob     String[] @db.ObjectId
+}
+
+model companies {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  username        String   @unique
+  company_name    String   @unique
+  password        String
+  email           String   @unique
+  location        String?
+  n_employee      Int
+  description     String?
+  createdAt       DateTime @db.Date
+  updatedAt       DateTime @db.Date
+  v               Int?     @map("__v")
+  followers       String[] @db.ObjectId
+  jobs            String[] @db.ObjectId
+}
+
+model comments {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  body            String
+  author          String   @db.ObjectId
+  job             String   @db.ObjectId
+  createdAt       DateTime @db.Date
+  updatedAt       DateTime @db.Date
+  v               Int      @map("__v")
+}
+
+model categories {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id_cat          String   @db.ObjectId
+  category_name   String
+  image           String
+  jobs            String[] @db.ObjectId
+  slug            String   @unique(map: "slug_1")
+  v               Int      @map("__v")
+}
