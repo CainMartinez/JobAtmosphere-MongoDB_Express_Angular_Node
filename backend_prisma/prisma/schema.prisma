@@ -48,8 +48,8 @@ model companies {
   location        String?
   n_employee      Int
   description     String?
-  createdAt       DateTime @db.Date
-  updatedAt       DateTime @db.Date
+  createdAt       DateTime @default(now()) @db.Date
+  updatedAt       DateTime @updatedAt @db.Date
   v               Int?     @map("__v")
   followers       String[] @db.ObjectId
   jobs            String[] @db.ObjectId

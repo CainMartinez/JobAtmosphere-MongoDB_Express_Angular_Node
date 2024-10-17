@@ -1,13 +1,29 @@
 import prisma from "../prisma";
 
-interface RequireFields{
-    username: string,
-    password: string,
-    
+interface CompanyData {
+    username: string;
+    company_name: string;
+    password: string;
+    email: string;
+    location?: string;
+    n_employee: number;
+    description?: string;
 }
 
-export default async function jobCreatePrisma(slug: string) {
-    const job = await prisma.jobs.
+export default async function companyCreatePrisma(data: CompanyData) {
+    const newCompany = await prisma.companies.create({
+        data: {
+            username: data.username,
+            company_name: data.company_name,
+            password: data.password,
+            email: data.email,
+            location: data.location,
+            n_employee: data.n_employee,
+            description: data.description,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
     });
-    return job;
+
+    return newCompany;
 }
