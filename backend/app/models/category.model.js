@@ -21,6 +21,8 @@ const category_schema = mongoose.Schema({
         required: true
     },
     jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "job" }], //clave ajena a job
+},{
+    collection: 'Categories'
 });
 
 category_schema.plugin(uniqueValidator, { msg: "already taken" });

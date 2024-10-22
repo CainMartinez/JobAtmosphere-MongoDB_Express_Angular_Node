@@ -47,7 +47,18 @@ const userSchema = new mongoose.Schema(
         following: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }]
+        }],
+        favoriteJob: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Job"
+        }],
+        isActive:{
+            type: Boolean,
+            default: false
+        },
+    },
+    {
+        collection: 'Users'
     },
     {
         timestamps: true,

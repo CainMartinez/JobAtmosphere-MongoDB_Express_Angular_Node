@@ -47,6 +47,8 @@ const JobSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }]
+},{
+    collection: 'Jobs'
 });
 
 JobSchema.plugin(uniqueValidator, { msg: "already taken" });

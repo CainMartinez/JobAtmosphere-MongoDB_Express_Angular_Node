@@ -7,36 +7,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model jobs {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  salary          Int
-  description     String
-  company         String
-  images          String[]
-  img             String
-  id_cat          String   @db.ObjectId
-  slug            String   @unique(map: "slug_1")
-  v               Int      @map("__v")
-  comments        Json[]
-  favouritesCount Int      @default(0)
+model Blacklist {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  v      Int    @map("__v")
+  token  String @unique(map: "token_1")
+  userId String @db.ObjectId
 }
 
-model users {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  username        String   @unique
-  password        String
-  email           String   @unique
-  bio             String?
-  image           String?
-  refresh_token   String?
-  uuid            String   @unique
-  createdAt       DateTime @db.Date
-  updatedAt       DateTime @db.Date
-  v               Int      @map("__v")
-  favouriteJob    String[] @db.ObjectId
-  following       String[] @db.ObjectId
-  favoriteJob     String[] @db.ObjectId
+model Categories {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  v             Int      @map("__v")
+  category_name String
+  id_cat        String
+  image         String
+  jobs          String[]
+  slug          String   @unique(map: "slug_1")
+}
+
+model Comments {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  v      Int    @map("__v")
+  author String @db.ObjectId
+  body   String
+  job    String @db.ObjectId
+}
+
+model Jobs {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  v              Int      @map("__v")
+  comments       String[]
+  company        String
+  description    String
+  favoritesCount Int
+  id_cat         String
+  images         String[]
+  img            String
+  name           String
+  salary         Int
+  slug           String   @unique(map: "slug_1")
+}
+
+model Users {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  v             Int      @map("__v")
+  bio           String
+  email         String   @unique(map: "email_1")
+  favoriteJob   String[]
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  following     Json?
+  image         String
+  isActive      Boolean
+  password      String
+  refresh_token String
+  username      String   @unique(map: "username_1")
+  uuid          String   @unique(map: "uuid_1")
 }
 
 model companies {
@@ -53,24 +77,4 @@ model companies {
   v               Int?     @map("__v")
   followers       String[] @db.ObjectId
   jobs            String[] @db.ObjectId
-}
-
-model comments {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  body            String
-  author          String   @db.ObjectId
-  job             String   @db.ObjectId
-  createdAt       DateTime @db.Date
-  updatedAt       DateTime @db.Date
-  v               Int      @map("__v")
-}
-
-model categories {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  id_cat          String   @db.ObjectId
-  category_name   String
-  image           String
-  jobs            String[] @db.ObjectId
-  slug            String   @unique(map: "slug_1")
-  v               Int      @map("__v")
 }

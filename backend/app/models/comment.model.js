@@ -16,6 +16,9 @@ const commentSchema = new mongoose.Schema({
     }
 },
 {
+    collection: 'Comments'
+},
+{
     timestamps: true
 });
 
