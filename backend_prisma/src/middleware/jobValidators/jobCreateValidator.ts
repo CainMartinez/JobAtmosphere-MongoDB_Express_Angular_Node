@@ -10,9 +10,11 @@ const jobCreateValidator = [
     body('company').isString().withMessage('Company name is required'),
     body('images').isArray().withMessage('Images must be an array of strings'),
     body('img').isString().withMessage('Main image is required'),
+
+    // Validación para el campo 'id_cat' usando findFirst en lugar de findUnique
     body('id_cat').isString().withMessage('Category ID is required')
         .custom(async (value) => {
-            const category = await prisma.categories.findUnique({ where: { id: value } });
+            const category = await prisma.categories.findFirst({ where: { id_cat: value } });
             if (!category) {
                 throw new Error('Category ID does not exist');
             }
