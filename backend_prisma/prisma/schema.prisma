@@ -53,6 +53,7 @@ model Users {
   bio           String
   email         String   @unique(map: "email_1")
   favoriteJob   String[]
+  inscriptions  String[]
   /// Could not determine type: the field only had null or empty values in the sample set.
   following     Json?
   image         String
@@ -63,7 +64,7 @@ model Users {
   uuid          String   @unique(map: "uuid_1")
 }
 
-model companies {
+model Companies {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   username        String   @unique
   company_name    String   @unique

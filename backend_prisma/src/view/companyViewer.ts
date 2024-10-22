@@ -1,6 +1,6 @@
-import { companies } from "@prisma/client";
+import { Companies } from "@prisma/client";
 
-export default function companyViewer(company: companies) {
+export default function companyViewer(company: Companies) {
     const companyView = {
         id: company.id,
         username: company.username,
