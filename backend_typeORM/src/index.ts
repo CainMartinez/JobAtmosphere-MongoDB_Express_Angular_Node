@@ -3,7 +3,6 @@ import express from 'express';
 import { createConnection } from 'typeorm';
 import { User } from './user/user.entity';  // Asegúrate de que este modelo esté bien definido
 import userRoutes from './user/user.routes';  // Importa las rutas de usuario
-import adminRoutes from '../src/admin.routes';  // Importa las rutas de admin
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -31,4 +30,4 @@ createConnection({
 // Agregar las rutas de usuario
 app.use('/users', userRoutes);  // Aquí asignamos las rutas
 
-app.use('/admin', adminRoutes);
+app.use('/recruiter', userRoutes);
