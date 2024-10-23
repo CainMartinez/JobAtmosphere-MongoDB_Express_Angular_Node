@@ -8,6 +8,7 @@ interface JobData {
     images: string[];
     img: string;
     id_cat: string;
+    isActive?: boolean;
 }
 
 export default async function jobCreatePrisma(data: JobData) {
@@ -20,6 +21,7 @@ export default async function jobCreatePrisma(data: JobData) {
             images: data.images,
             img: data.img,
             id_cat: data.id_cat,
+            isActive: data.isActive || false,
             slug: `${data.name.toLowerCase().replace(/ /g, '-')}-${Math.random().toString(36).substr(2, 9)}`,
             favoritesCount: 0,
             comments: [],

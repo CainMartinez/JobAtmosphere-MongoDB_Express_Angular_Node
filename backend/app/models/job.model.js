@@ -47,6 +47,10 @@ const JobSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    isActive:{
+        type: Boolean,
+        default: false
+    },
     aplication: [{
         idUser: {
             type: mongoose.Schema.Types.ObjectId,

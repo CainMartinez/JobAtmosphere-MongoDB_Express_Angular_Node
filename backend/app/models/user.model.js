@@ -48,10 +48,6 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
-        isActive:{
-            type: Boolean,
-            default: false
-        },
         inscription: [{
             jobId: {
                 type: mongoose.Schema.Types.ObjectId,
