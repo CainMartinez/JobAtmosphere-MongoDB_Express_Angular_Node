@@ -45,6 +45,7 @@ model Jobs {
   name           String
   salary         Int
   slug           String   @unique(map: "slug_1")
+  applications   Json?
 }
 
 model Users {
@@ -53,8 +54,6 @@ model Users {
   bio           String
   email         String   @unique(map: "email_1")
   favoriteJob   String[]
-  inscriptions  String[]
-  /// Could not determine type: the field only had null or empty values in the sample set.
   following     Json?
   image         String
   isActive      Boolean
@@ -62,6 +61,7 @@ model Users {
   refresh_token String
   username      String   @unique(map: "username_1")
   uuid          String   @unique(map: "uuid_1")
+  inscriptions  Json?  
 }
 
 model Companies {

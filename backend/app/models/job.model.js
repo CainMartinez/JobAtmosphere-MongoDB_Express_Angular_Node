@@ -46,7 +46,18 @@ const JobSchema = mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
-    }]
+    }],
+    aplication: [{
+        idUser: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        status: {
+            type: String,
+            enum: ["pending", "accepted", "rejected"], 
+            default: "pending"
+        }
+    }],
 },{
     collection: 'Jobs'
 });
