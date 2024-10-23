@@ -1,5 +1,5 @@
 {
-  "name": "prueba_prisma",
+  "name": "backend_prisma",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
