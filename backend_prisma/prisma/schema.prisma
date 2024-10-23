@@ -78,4 +78,5 @@ model Companies {
   v               Int?     @map("__v")
   followers       String[] @db.ObjectId
   jobs            String[] @db.ObjectId
+  roles           String[] @default(["company"]) // Se añade un campo de roles
 }
