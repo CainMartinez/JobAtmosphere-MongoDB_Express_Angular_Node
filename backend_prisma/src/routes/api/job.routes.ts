@@ -1,10 +1,21 @@
 import { Router, Request, Response, NextFunction } from "express";
 import jobCreate from "../../controllers/jobController/jobCreate.controller";
 import validatorCreate from "../../middleware/jobValidators/jobCreateValidator";
+import authMiddleware from "../../middleware/authMiddleware";  // Importar el middleware de autenticación
 
 const router = Router();
 
-router.post("/jobs", validatorCreate, (req: Request, res: Response, next: NextFunction) => {
-    jobCreate(req, res, next);
-});
+router.post(
+    "/jobs", 
+    authMiddleware,  // Añadir el middleware de autenticación
+    validatorCreate, 
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await jobCreate(req, res, next);  // Asegurarnos de que el controlador sea asíncrono y manejado correctamente
+        } catch (error) {
+            next(error);  // Pasar el error al middleware de manejo de errores
+        }
+    }
+);
+
 export default router;
