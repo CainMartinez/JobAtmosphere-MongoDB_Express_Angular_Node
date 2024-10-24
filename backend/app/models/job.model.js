@@ -51,6 +51,10 @@ const JobSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    recruiter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recruiter"
+    },
     aplication: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,
