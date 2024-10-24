@@ -52,7 +52,7 @@ const JobSchema = mongoose.Schema({
         default: false
     },
     aplication: [{
-        idUser: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
