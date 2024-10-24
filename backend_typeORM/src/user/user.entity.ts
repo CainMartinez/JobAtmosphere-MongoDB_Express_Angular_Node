@@ -5,23 +5,25 @@ import * as argon2 from 'argon2';
 @Entity('Recruiter')
 export class User {
     @ObjectIdColumn()
-    id!: ObjectId;  // Añadimos el operador ! para indicar que será inicializada
+    id!: ObjectId;
 
     @Column()
-    @IsEmail()
-    email!: string;  // Añadimos el operador ! para indicar que será inicializada
+    email!: string;
 
     @Column()
-    username!: string;  // Añadimos el operador ! para indicar que será inicializada
+    username!: string;
 
     @Column()
-    password!: string;  // Añadimos el operador ! para indicar que será inicializada
+    password!: string;
 
     @Column()
-    roles: string[] = [];  // Inicializamos el array de roles por defecto vacío
+    roles: string[] = [];
 
-    @Column({ default: false })  // Campo 'busy' con valor por defecto false
+    @Column({ default: false })
     busy?: boolean;
+
+    @Column('simple-array')  // Definir 'jobs' como un array de strings o el tipo adecuado
+    jobs?: string[];  // Aquí definimos el campo jobs como un array de strings
 
     // Método para encriptar la contraseña con Argon2
     async hashPassword() {

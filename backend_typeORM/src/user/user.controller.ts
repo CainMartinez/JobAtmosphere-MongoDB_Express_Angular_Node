@@ -29,7 +29,7 @@ export class UserController {
                 email: createUserDto.email,
                 username: createUserDto.username,
                 password: createUserDto.password,
-                roles: ['admin']
+                roles: ['recruiter']
             });
             return res.status(201).json({ 
                 message: 'User registered successfully'
