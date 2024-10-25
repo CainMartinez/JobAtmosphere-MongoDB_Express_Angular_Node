@@ -18,12 +18,8 @@ export const updateApplicationStatus = async (req: Request, res: Response, next:
             jobId,
             userId,
             newStatus
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`  // Añadir el token en el encabezado de la solicitud a Mongoose
-            }
         });
-
+        // console.log("Axios response:", response.data);
         return res.status(200).json({
             message: "Application status updated successfully",
             data: response.data
