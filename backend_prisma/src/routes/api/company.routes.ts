@@ -6,6 +6,8 @@ import validatorCreate from '../../middleware/companyValidators/companyCreateVal
 import { roleMiddleware } from '../../middleware/companyValidators/RoleMiddleware';
 import companyLogin from "../../controllers/companyController/companyLogin.controller";
 import validatorLogin from "../../middleware/companyValidators/companyLoginValidator";
+import { updateFollowers } from "../../controllers/companyController/companyFollowers.controller";
+
 
 const router = Router();
 
@@ -20,6 +22,9 @@ router.get('/dashboard', roleMiddleware('company'), (req, res) => {
 });
 router.post('/login', validatorLogin, (req: Request, res: Response, next: NextFunction) => {
     companyLogin(req, res, next);
+});
+router.put('/follow/:companyId', (req: Request, res: Response) => {
+    updateFollowers(req, res);
 });
 
 export default router;
