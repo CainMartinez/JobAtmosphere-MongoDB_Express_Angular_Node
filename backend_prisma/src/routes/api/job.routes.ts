@@ -3,6 +3,7 @@ import jobCreate from "../../controllers/jobController/jobCreate.controller";
 import assignRecruiter from "../../controllers/jobController/assignRecruiter.controller";
 import validatorCreate from "../../middleware/jobValidators/jobCreateValidator";
 import authMiddleware from "../../middleware/authMiddleware";  // Importar el middleware de autenticación
+import updateJob from "../../controllers/jobController/jobUpdate.controller";
 
 const router = Router();
 
@@ -27,6 +28,18 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             await assignRecruiter(req, res, next);  // Llamamos al nuevo controlador
+        } catch (error) {
+            next(error);  // Manejo de errores
+        }
+    }
+);
+
+router.put(
+    "/job/:slug", 
+    authMiddleware,  // Middleware de autenticación
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await updateJob(req, res, next);  // Llamamos al nuevo controlador
         } catch (error) {
             next(error);  // Manejo de errores
         }
