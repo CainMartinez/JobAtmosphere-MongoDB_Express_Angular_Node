@@ -3,6 +3,7 @@ module.exports = (app) => {
     const { verifyJWT, logoutUser } = require("../middleware/verifyJWT");
     const { applyToJob } = require("../controllers/application.controller.js"); 
     const updateApplicationStatus = require("../controllers/updateStatus.controller.js");
+    const verifyJWTOptional = require("../middleware/verifyJWTOptional");
 
     // Authentication
     app.post("/users/login", userController.userLogin);
@@ -23,7 +24,7 @@ module.exports = (app) => {
     app.get("/user/profile", verifyJWT, userController.getProfileUser);
 
     // Apply to Job
-    app.post("/user/apply", verifyJWT, applyToJob);
+    app.post("/user/apply", verifyJWTOptional, applyToJob);
 
     // Update Application Status
     app.put("/user/application/status", updateApplicationStatus);

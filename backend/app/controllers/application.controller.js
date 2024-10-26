@@ -32,6 +32,9 @@ const applyToJob = asyncHandler(async (req, res) => {
 
     user.inscription.push({ jobId, status: "pending" });
     await user.save();
+    
+    return res.status(200).json({ message: "Successfully applied to the job" });
+
 });
 
 module.exports = {
