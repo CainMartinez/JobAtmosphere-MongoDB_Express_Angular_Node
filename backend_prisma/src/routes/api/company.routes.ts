@@ -7,7 +7,8 @@ import { roleMiddleware } from '../../middleware/companyValidators/RoleMiddlewar
 import companyLogin from "../../controllers/companyController/companyLogin.controller";
 import validatorLogin from "../../middleware/companyValidators/companyLoginValidator";
 import { updateFollowers } from "../../controllers/companyController/companyFollowers.controller";
-
+import updateCompany from "../../controllers/companyController/updateCompanty.controller";
+import authMiddleware from "../../middleware/authMiddleware";
 
 const router = Router();
 
@@ -26,5 +27,16 @@ router.post('/login', validatorLogin, (req: Request, res: Response, next: NextFu
 router.put('/follow/:companyId', (req: Request, res: Response) => {
     updateFollowers(req, res);
 });
+router.put(
+    "/company",
+    authMiddleware,  // Middleware de autenticación
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await updateCompany(req, res, next);
+        } catch (error) {
+            next(error);  // Manejo de errores
+        }
+    }
+);
 
 export default router;
