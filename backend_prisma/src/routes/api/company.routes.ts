@@ -7,7 +7,7 @@ import { roleMiddleware } from '../../middleware/companyValidators/RoleMiddlewar
 import companyLogin from "../../controllers/companyController/companyLogin.controller";
 import validatorLogin from "../../middleware/companyValidators/companyLoginValidator";
 import { updateFollowers } from "../../controllers/companyController/companyFollowers.controller";
-import updateCompany from "../../controllers/companyController/updateCompanty.controller";
+import updateCompany from "../../controllers/companyController/updateCompany.controller";
 import authMiddleware from "../../middleware/authMiddleware";
 
 const router = Router();

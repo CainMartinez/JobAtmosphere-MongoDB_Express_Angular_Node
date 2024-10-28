@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validate } from 'class-validator';
 import { UserService } from './recruiter.service';
 import { AuthService } from '../utils/auth.service';
@@ -66,6 +66,26 @@ export class UserController {
 
         } catch (error) {
             return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async getCurrentRecruiter(req: Request, res: Response, next: NextFunction) {
+        const email = (req as Request & { email: string }).email;  // Forzamos a TypeScript a reconocer `req.email`
+
+        if (!email) {
+            return res.status(400).json({ message: 'Email not found in token' });
+        }
+
+        try {
+            const user = await this.userService.findUserByEmail(email);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            return res.status(200).json({ user });
+        } catch (error) {
+            return res.status(500).json({ message: 'Error retrieving user profile' });
         }
     }
 }

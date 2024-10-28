@@ -3,6 +3,7 @@ import { UserController } from './recruiter.controller';
 import { roleMiddleware } from '../middleware/roleMiddleware';
 import { RecruiterAssignController } from './recruiterAssign.controller';
 import { updateApplicationStatus } from './recruiterApplication.controller';
+import authMiddleware from '../middleware/auth.middleware';
 
 const router = Router();
 const userController = new UserController();
@@ -19,8 +20,8 @@ router.post('/login', async (req: Request, res: Response) => {
 });
 
 // Ruta protegida con middleware de roles
-router.get('/test', roleMiddleware('recruiter'), (req, res) => {
-    res.json({ message: 'Welcome, recruiter!' });
+router.get('/dashboard', roleMiddleware('recruiter'), (req, res) => {
+    
 });
 
 // Ruta para asignar un recruiter a un job
@@ -31,5 +32,17 @@ router.post('/assign', async (req: Request, res: Response) => {
 router.post('/application/status', async (req: Request, res: Response, next: NextFunction ) => {
     updateApplicationStatus(req, res, next)
 });
+
+router.get(
+    "/get",
+    authMiddleware,  // Middleware de autenticación
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await userController.getCurrentRecruiter(req, res, next);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 export default router;
