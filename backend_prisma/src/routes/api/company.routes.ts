@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction, RequestHandler } from "express";
-import companyGetById from '../../controllers/companyController/companyGetById.controller';
+import companyGetById from '../../controllers/companyController/companyGetByEmail.controller';
 import companyCreate from '../../controllers/companyController/companyCreate.controller';
 import validatorListOne from '../../middleware/companyValidators/companyListOneValidator';
 import validatorCreate from '../../middleware/companyValidators/companyCreateValidator';

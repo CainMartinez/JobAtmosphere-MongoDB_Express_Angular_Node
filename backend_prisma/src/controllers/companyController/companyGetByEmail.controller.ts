@@ -10,7 +10,7 @@ import companyViewer from "../../view/companyViewer";
  * @param next NextFunction
  * @returns void
  */
-export default async function companyGetById(
+export default async function companyGetByEmail(
     req: Request,
     res: Response,
     next: NextFunction
