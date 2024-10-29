@@ -7,6 +7,9 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AuthModule } from './auth/auth.module';
+import { ProfileModule } from './profile/profile.module';
+import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { AuthModule } from './auth/auth.module';
     CoreModule,
     HttpClientModule,
     CarouselModule.forRoot(),
-    AuthModule
+    AuthModule,
+    ProfileModule,
+    CommonModule,
+    NgbModule,
 
   ],
   providers: [],
