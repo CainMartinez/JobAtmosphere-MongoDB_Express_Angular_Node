@@ -15,26 +15,26 @@ router.post('/register', async (req: Request, res: Response) => {
 });
 
 // Ruta para el login de usuarios
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/recruiter/login', async (req: Request, res: Response) => {
     await userController.login(req, res);  // Llamamos al controlador
 });
 
 // Ruta protegida con middleware de roles
-router.get('/dashboard', roleMiddleware('recruiter'), (req, res) => {
+router.get('/recruiter/dashboard', roleMiddleware('recruiter'), (req, res) => {
     
 });
 
 // Ruta para asignar un recruiter a un job
-router.post('/assign', async (req: Request, res: Response) => {
+router.post('/recruiter/assign', async (req: Request, res: Response) => {
     recruiterAssignController.assignRecruiter(req, res)
 });
 
-router.post('/application/status', async (req: Request, res: Response, next: NextFunction ) => {
+router.post('/recruiter/application/status', async (req: Request, res: Response, next: NextFunction ) => {
     updateApplicationStatus(req, res, next)
 });
 
 router.get(
-    "/get",
+    "/recruiter",
     authMiddleware,  // Middleware de autenticación
     async (req: Request, res: Response, next: NextFunction) => {
         try {

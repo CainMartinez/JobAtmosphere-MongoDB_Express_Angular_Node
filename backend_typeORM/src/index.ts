@@ -16,7 +16,7 @@ const options: cors.CorsOptions = {
 
 // Middleware para el parsing de JSON
 app.use(express.json());
-
+app.use(cors(options));
 // Conexión a la base de datos con TypeORM
 createConnection({
     type: "mongodb",
@@ -37,4 +37,4 @@ createConnection({
 // Agregar las rutas de usuario
 app.use('/users', userRoutes);  // Aquí asignamos las rutas
 
-app.use('/recruiter', userRoutes);
+app.use('/', userRoutes);
