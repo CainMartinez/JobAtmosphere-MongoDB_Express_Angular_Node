@@ -6,21 +6,27 @@ import { jwtDecode } from 'jwt-decode';
 @Injectable({
     providedIn: 'root',
 })
-export class NoAuthGuard implements CanActivate {
+export class UserTypeGuard implements CanActivate {
     constructor(private jwtService: JwtService, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const token = this.jwtService.getToken();
-
         if (token) {
             try {
-                // Decodificar el token para verificar si hay un usuario autenticado
+                // Decodificar el token
                 const decodedToken: any = jwtDecode(token);
+                // console.log('decodedToken:', decodedToken);
                 const userType = decodedToken?.user?.typeuser || decodedToken?.typeuser;
+                // console.log('userType:', userType);
+                const requiredTypeUser = route.data['typeuser'] as string;
+                // console.log('requiredTypeUser:', requiredTypeUser);
 
-                if (userType) {
-                    // Si hay un token válido y un tipo de usuario, redirigir al home
-                    this.router.navigateByUrl('/home');
+                // Verificar si el usuario tiene el tipo requerido
+                if (userType && userType === requiredTypeUser) {
+                    return true;
+                } else {
+                    // Redirigir si no es del tipo correcto
+                    this.router.navigate(['/home']);
                     return false;
                 }
             } catch (error) {
@@ -28,7 +34,8 @@ export class NoAuthGuard implements CanActivate {
             }
         }
 
-        // Si no hay token o si hay algún error, permitir el acceso
-        return true;
+        // Si no hay token, redirigir al login
+        this.router.navigate(['/login']);
+        return false;
     }
 }
