@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
-import { User } from '../models/user.model';
+import { Company } from '../models/company.model';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
-    private currentUserSubject = new BehaviorSubject<User>({} as User);
-    public currentUser = this.currentUserSubject
+export class CompanyService {
+    private currentCompanySubject = new BehaviorSubject<Company>({} as Company);
+    public currentCompany = this.currentCompanySubject
         .asObservable()
         .pipe(distinctUntilChanged());
 
@@ -22,9 +22,9 @@ export class UserService {
     populate() {
         const token = this.jwtService.getToken();
         if (token) {
-            this.apiService.get('/user', undefined, 3000).subscribe(
+            this.apiService.get('/company', undefined, 3001).subscribe(
                 (data) => {
-                    return this.setAuth({ ...data.user, token });
+                    return this.setAuth(data.company);
                 },
                 (err) => {
                     this.purgeAuth();
@@ -35,56 +35,54 @@ export class UserService {
         }
     }
 
-    setAuth(user: User) {
-        // console.log(user);
-        this.jwtService.saveToken(user.token);
-        this.currentUserSubject.next(user);
+    setAuth(company: Company) {
+        this.currentCompanySubject.next(company);
         this.isAuthenticatedSubject.next(true);
     }
 
     purgeAuth() {
         this.jwtService.destroyToken();
-        this.currentUserSubject.next({} as User);
+        this.currentCompanySubject.next({} as Company);
         this.isAuthenticatedSubject.next(false);
     }
 
-    attemptAuth(type: string, credentials: any): Observable<User> {
-        const route = type === 'login' ? '/login' : '/register';
-        return this.apiService.post(`/users${route}`, { user: credentials }, 3000).pipe(
+    attemptAuth(type: string, credentials: any): Observable<Company> {
+        const route = type === 'login' ? '/company/login' : '/company/register';
+        return this.apiService.post(route, credentials, 3001).pipe(
             map((data: any) => {
                 if (type === 'login') {
-                    // console.log(data);
-                    this.setAuth(data.user);
+                    this.jwtService.saveToken(data.token);
+                    this.populate();
                 }
                 return data;
             })
         );
     }
 
-    getCurrentUser(): User {
-        return this.currentUserSubject.value;
+    getCurrentCompany(): Company {
+        return this.currentCompanySubject.value;
     }
 
-    getUserProfile(): Observable<User> {
-        return this.apiService.get('/user/profile', undefined, 3000).pipe(
+    getCompanyProfile(companyId: string): Observable<Company> {
+        return this.apiService.get(`/company/${companyId}`, undefined, 3001).pipe(
             map((data: any) => {
-                this.currentUserSubject.next(data.user);
-                return data.user;
+                this.currentCompanySubject.next(data.company);
+                return data.company;
             })
         );
     }
 
-    update(user: any): Observable<User> {
-        return this.apiService.put('/user', { user }, 3000).pipe(
+    update(company: any): Observable<Company> {
+        return this.apiService.put('/company', { company }, 3001).pipe(
             map((data: any) => {
-                this.currentUserSubject.next(data.user);
-                return data.user;
+                this.currentCompanySubject.next(data.company);
+                return data.company;
             })
         );
     }
 
     logout(): Observable<void> {
-        return this.apiService.post('/users/logout', {}, 3000).pipe(
+        return this.apiService.post('/company/logout', {}, 3001).pipe(
             map(() => {
                 this.purgeAuth();
             })
