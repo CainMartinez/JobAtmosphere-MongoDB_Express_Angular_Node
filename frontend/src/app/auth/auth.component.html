@@ -10,6 +10,20 @@
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
+                                <fieldset class="form-group">
+                                    <div>
+                                        <input type="radio" id="client" name="userType" value="client"
+                                            [(ngModel)]="selectedUserType" required />
+                                        <label for="client">Client</label>
+                                        <input type="radio" id="company" name="userType" value="company"
+                                            [(ngModel)]="selectedUserType" required />
+                                        <label for="company">Company</label>
+                                        <input type="radio" id="recruiter" name="userType" value="recruiter"
+                                            [(ngModel)]="selectedUserType" required />
+                                        <label for="recruiter">Recruiter</label>
+                                    </div>
+                                </fieldset>
+                                <br />
                                 <app-list-errors [errors]="errors"></app-list-errors>
                                 <form [formGroup]="authForm" (ngSubmit)="submitForm()">
                                     <div class="d-flex align-items-center mb-3 pb-1">
@@ -27,7 +41,8 @@
                                         <input formControlName="username" type="text" id="form2Example18"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="form2Example18">Username</label>
-                                        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-danger">
+                                        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+                                            class="text-danger">
                                             <div *ngIf="username?.errors?.['required']">Username is required.</div>
                                         </div>
                                     </div>
@@ -36,7 +51,8 @@
                                         <input formControlName="email" type="email" id="form2Example17"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="form2Example17">Email address</label>
-                                        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-danger">
+                                        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                                            class="text-danger">
                                             <div *ngIf="email?.errors?.['required']">Email is required.</div>
                                             <div *ngIf="email?.errors?.['email']">Invalid email address.</div>
                                         </div>
@@ -46,9 +62,11 @@
                                         <input formControlName="password" type="password" id="form2Example27"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="form2Example27">Password</label>
-                                        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-danger">
+                                        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                                            class="text-danger">
                                             <div *ngIf="password?.errors?.['required']">Password is required.</div>
-                                            <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+                                            <div *ngIf="password?.errors?.['minlength']">Password must be at least 6
+                                                characters long.</div>
                                         </div>
                                     </div>
 
