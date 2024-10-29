@@ -3,10 +3,16 @@ import express from 'express';
 import { createConnection } from 'typeorm';
 import { User } from './recruiter/recruiter.entity';  // Asegúrate de que este modelo esté bien definido
 import userRoutes from './recruiter/recruiter.routes';  // Importa las rutas de usuario
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3002;
 const url_mongo = process.env.MONGODB_URL || 'mongodb://localhost:27017/info-jobs';
+const allowedOrigins = ['http://localhost:4200'];
+
+const options: cors.CorsOptions = {
+    origin: allowedOrigins
+};
 
 // Middleware para el parsing de JSON
 app.use(express.json());
