@@ -53,12 +53,12 @@ export class UserController {
         try {
             const user = await this.userService.findUserByEmail(loginUserDto.email);
             if (!user) {
-                return res.status(400).json({ message: 'Invalid email or password' });
+                return res.status(400).json({ message: 'Invalid email !' });
             }
 
             const isValidPassword = await this.userService.validatePassword(user, loginUserDto.password);
             if (!isValidPassword) {
-                return res.status(400).json({ message: 'Invalid email or password' });
+                return res.status(400).json({ message: 'Invalid password !' });
             }
 
             const token = this.authService.generateAccessToken(user);

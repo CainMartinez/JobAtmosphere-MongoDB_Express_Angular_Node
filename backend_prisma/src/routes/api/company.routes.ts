@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction, RequestHandler } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import companyGetById from '../../controllers/companyController/companyGetByEmail.controller';
 import companyCreate from '../../controllers/companyController/companyCreate.controller';
 import validatorListOne from '../../middleware/companyValidators/companyListOneValidator';
@@ -6,46 +6,60 @@ import validatorCreate from '../../middleware/companyValidators/companyCreateVal
 import { roleMiddleware } from '../../middleware/companyValidators/RoleMiddleware';
 import companyLogin from "../../controllers/companyController/companyLogin.controller";
 import validatorLogin from "../../middleware/companyValidators/companyLoginValidator";
-import { updateFollowers } from "../../controllers/companyController/companyFollowers.controller";
-import updateCompany from "../../controllers/companyController/updateCompany.controller";
 import authMiddleware from "../../middleware/authMiddleware";
+import { updateFollowers } from "../../controllers/companyController/companyFollowers.controller";
+import updateCompany from "../../controllers/companyController/companyUpdate.controller";
+import { companyDashboard } from "../../controllers/companyController/companyDashboard.controller";
 
 const router = Router();
 
-router.get("/company/:id", validatorListOne, (req: Request, res: Response, next: NextFunction) => {
-    companyGetById(req, res, next);
-});
-router.post("/company/register", validatorCreate, (req: Request, res: Response, next: NextFunction) => {
-    companyCreate(req, res, next);
-});
-router.get('/company/dashboard', roleMiddleware('company'), (req, res) => {
-    res.json({ message: 'Welcome to the company dashboard' });
-});
+// Authentification
 router.post('/company/login', validatorLogin, (req: Request, res: Response, next: NextFunction) => {
     companyLogin(req, res, next);
 });
-router.put('/company/follow/:companyId', (req: Request, res: Response) => {
+
+// Register
+router.post("/company/register", validatorCreate, (req: Request, res: Response, next: NextFunction) => {
+    companyCreate(req, res, next);
+});
+
+// Profile
+router.get("/company/:id", authMiddleware, (req: Request, res: Response, next: NextFunction) => {
+    companyGetById(req, res, next);
+});
+
+// Dashboard
+router.get('/company/dashboard', roleMiddleware('company'), (req: Request, res: Response) => {
+    companyDashboard(req, res);
+});
+
+// Follow
+router.put('/follow/:companyId', (req: Request, res: Response) => {
     updateFollowers(req, res);
 });
+
+// Update
 router.put(
     "/company",
-    authMiddleware,  // Middleware de autenticación
+    authMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             await updateCompany(req, res, next);
         } catch (error) {
-            next(error);  // Manejo de errores
+            next(error);
         }
     }
 );
+
+// Get company
 router.get(
     "/company",
-    authMiddleware,  // Middleware de autenticación
+    authMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await companyGetById(req, res, next);
+            await companyDashboard(req, res);
         } catch (error) {
-            next(error);  // Manejo de errores
+            next(error);
         }
     }
 );
