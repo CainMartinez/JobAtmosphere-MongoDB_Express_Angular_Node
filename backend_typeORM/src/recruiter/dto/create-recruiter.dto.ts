@@ -5,6 +5,9 @@ export class CreateUserDto {
     email!: string;  // Añadimos el operador !
 
     @IsString()
+    image?: string[];  // Añadimos el operador !
+
+    @IsString()
     @IsNotEmpty()
     username!: string;  // Añadimos el operador !
 
