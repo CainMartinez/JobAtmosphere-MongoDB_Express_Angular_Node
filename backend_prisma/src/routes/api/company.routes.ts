@@ -11,6 +11,7 @@ import updateCompany from "../../controllers/companyController/companyUpdate.con
 import { companyDashboard } from "../../controllers/companyController/companyDashboard.controller";
 import getCompanyJobs from "../../controllers/jobController/companyJobs.controller";
 import companyGetByName from "../../controllers/companyController/companyGetByName.controller";
+import companyGetByNameValidator from "../../middleware/companyValidators/companyGetByNameValidator";
 
 const router = Router();
 
@@ -28,7 +29,9 @@ router.post("/company/register", validatorCreate, (req: Request, res: Response, 
 router.get("/company/:id", authMiddleware, (req: Request, res: Response, next: NextFunction) => {
     companyGetByEmail(req, res, next);
 });
-
+router.get("/details/:name", companyGetByNameValidator, (req: Request, res: Response, next: NextFunction) => {
+    companyGetByName(req, res, next);
+});
 // Dashboard
 router.get('/company/dashboard', roleMiddleware('company'), (req: Request, res: Response) => {
     companyDashboard(req, res);
@@ -77,7 +80,4 @@ router.get(
     }
 );
 
-router.get("/details/:name", (req: Request, res: Response, next: NextFunction) => {
-    companyGetByName(req, res, next);
-});
 export default router;

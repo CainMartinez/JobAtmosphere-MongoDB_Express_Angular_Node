@@ -1,18 +1,27 @@
-import { NextFunction, Request, Response } from "express";
-import companyListOnePrisma from "../../utils/db/company/companyListOnePrisma";
-import companyViewer from "../../view/companyViewer";
+import { Request, Response, NextFunction } from "express";
+import prisma from "../../utils/db/prisma";
 
-export default async function companyGetByName(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
+/**
+ * Controlador para obtener una compañía por su `company_name`.
+ * @param req Request con el nombre de la compañía en los parámetros
+ * @param res Response
+ * @param next NextFunction
+ */
+export default async function companyGetByName(req: Request, res: Response, next: NextFunction) {
+    const { name } = req.params;
+
     try {
-        const company = await companyListOnePrisma(req); // Pasar req directamente
-        if (!company) return res.sendStatus(404);
+        // Buscar la compañía en la base de datos por su `company_name`
+        const company = await prisma.companies.findUnique({
+            where: { company_name: name }
+        });
 
-        const companyView = companyViewer(company);
-        return res.status(200).json({ company: companyView });
+        if (!company) {
+            return res.status(404).json({ message: "Company not found" });
+        }
+
+        // Retornar los datos de la compañía
+        return res.status(200).json({ company });
     } catch (error) {
         return next(error);
     }
