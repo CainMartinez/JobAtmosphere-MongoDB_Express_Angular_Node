@@ -2,25 +2,27 @@ import { Request, Response, NextFunction } from "express";
 import updateCompanyPrisma from "../../utils/db/company/companyUpdatePrisma";
 import companyViewer from "../../view/companyViewer";
 
-/**
- * Company controller to update an existing company using the ID from the token.
- * @param req Request with company data in the body
- * @param res Response
- * @param next NextFunction
- * @returns void
- */
+// Extiende Request para incluir user en el tipo
+interface AuthenticatedRequest extends Request {
+    user?: {
+        email: string;
+    };
+}
+
 export default async function updateCompany(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
 ) {
-    // Obtenemos el ID de la compañía desde el token
-    const companyId = (req as any).user.id;
+    const companyEmail = req.user?.email;
     const { location, n_employee, description } = req.body;
 
+    if (!companyEmail) {
+        return res.status(401).json({ message: "Unauthorized: email missing" });
+    }
+
     try {
-        // Llamamos a la función updateCompany pasando el id y los campos a actualizar
-        const updatedCompany = await updateCompanyPrisma(companyId, { location, n_employee, description });
+        const updatedCompany = await updateCompanyPrisma(companyEmail, { location, n_employee, description });
 
         if (!updatedCompany) {
             return res.status(404).json({ error: "Company not found" });

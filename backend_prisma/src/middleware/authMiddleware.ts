@@ -1,7 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+// Extiende Request para incluir user en el tipo
+interface AuthenticatedRequest extends Request {
+    user?: {
+        email: string;
+    };
+}
+
+const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
@@ -13,8 +20,8 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
         const secretKey = process.env.JWT_SECRET as string;
         const decoded = jwt.verify(token, secretKey) as { email: string };
 
-        // Usamos type assertion para asignar `email` a `req` temporalmente
-        (req as Request & { email: string }).email = decoded.email;
+        // Guarda el email en `req.user`
+        req.user = { email: decoded.email };
 
         next();
     } catch (error) {
