@@ -1,76 +1,53 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-info">
-  <!-- Container wrapper -->
-  <div class="container-fluid d-flex justify-content-between align-items-center">
-    <!-- Left elements -->
-    <div class="d-flex align-items-center">
-      <!-- Toggle button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Left links -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="shop">Shop</a>
-          </li>
-          <li class="nav-item" *ngIf="logged">
-            <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
-            </a>
-          </li>
-        </ul>
-        <!-- Left links -->
-      </div>
-      <!-- Collapsible wrapper -->
+<!-- SI NO HAY USUARIO -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="logged === false">
+  <div class="container d-flex justify-content-between">
+    <a class="navbar-brand" routerLink="home">JobAtmosphere</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="login">Log in / Sign In</a>
+        </li>
+      </ul>
     </div>
-    <!-- Center brand -->
-    <a class="navbar-brand mx-auto" routerLink="home">
-      <h1 class="pt-1">TIC <strong class="jobs">Jobs</strong> NET</h1>
-    </a>
-    <!-- Right elements -->
-    <div class="d-flex align-items-center">
-      <!-- Icon -->
-      <!-- <a class="text-reset me-3" href="#">
-        <i class="fas fa-shopping-cart text-white"></i>
-      </a> -->
-      <!-- Notifications -->
-      <div class="dropdown" *ngIf="!logged">
-        <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Log in
-          <!-- <i class="fas fa-bell text-white"></i> -->
-          <!-- <span class="badge rounded-pill badge-notification bg-danger">1</span> -->
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" routerLink="register">Create a new account</a>
-          </li>
-          <li>
-            <a class="dropdown-item" routerLink="login">Login with your account</a>
-          </li>
-        </ul>
-      </div>
-      <!-- Avatar -->
-      <div class="dropdown" *ngIf="logged">
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow nav-link" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img [src]="currentUser.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="rounded-circle" height="25" alt="user image" loading="lazy" />
-          &nbsp; {{ currentUser.username }}
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-          <li>
-            <a class="dropdown-item" routerLink="profile">My Profile</a>
-          </li>
-          <li>
-            <a class="dropdown-item" (click)="logout()">Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- Right elements -->
   </div>
-  <!-- Container wrapper -->
 </nav>
-<!-- Navbar -->
+
+<!-- SI HAY USUARIO -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="logged">
+  <div class="container d-flex justify-content-between">
+    <a class="navbar-brand" routerLink="home">JobAtmosphere</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home">Home</a>
+        </li>
+        <li class="nav-item" *ngIf="isClient()">
+          <a class="nav-link" routerLink="shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn-link" (click)="onProfileClick()">
+            <img [src]="userImage || 'https://static.productionready.io/images/smiley-cyrus.jpg'" *ngIf="userImage"
+              class="user-pic" style="width: 35px; height: 35px" alt="user image" />
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

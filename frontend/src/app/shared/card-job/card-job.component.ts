@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, } from '@angular/core';
 import { Job } from '../../core/models/job.model';
 
 @Component({
@@ -10,11 +10,9 @@ import { Job } from '../../core/models/job.model';
 export class CardJobComponent implements OnInit {
 
   @Input() job: Job = {} as Job;
-
   constructor() { }
 
-  ngOnInit(): void {
-
+  ngOnInit(): void {  
   }
 
   onToggleFavorite(favorited: boolean) {

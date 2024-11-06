@@ -1,12 +1,7 @@
-<app-search (searchEvent)="get_list_filtered($event)"></app-search><br>
+<app-search (searchEvent)="get_list_filtered($event)"></app-search>
 <app-filters (eventofiltros)="get_list_filtered($event)" [listCategories]="listCategories"></app-filters>
-<div class="d-flex flex-wrap">
-  <div class="p-3 mb-5" *ngFor="let job of jobs">
-    <app-card-job [job]="job"></app-card-job>
-  </div>
+<div class="jobs">
+    <app-card-job *ngFor="let job of jobs" [job]="job"></app-card-job>
 </div>
-<div class="pagination-container" *ngIf="totalJobs > limit">
-  <div class="pagination">
-    <app-pagination [numItems]="totalJobs" [numItemsXPage]="limit" (paginationEvent)="testPagination($event)"></app-pagination>
-  </div>
-</div>
+<app-pagination [jobs]="jobs" [totalPages]="totalPages" [currentPage]="currentPage"
+    (pageChange)="setPageTo($event)"></app-pagination>

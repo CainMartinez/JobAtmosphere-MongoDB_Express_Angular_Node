@@ -2,26 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
-import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
+
+const URL = 'http://127.0.0.1:3000/categories';
+const URL_select = 'http://127.0.0.1:3000/categories_select_filter';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   all_categories(params: any): Observable<Category[]> {
-    console.log('Fetching all categories with params:', params);
-    return this.http.get<Category[]>(`${environment.URL}/categories`, { params }).pipe(
-      tap(categories => console.log('Received categories:', categories))
-    );
+    return this.http.get<Category[]>(URL, { params });
   }
 
   all_categories_select(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.URL}/categories_select_filter`).pipe(
-      tap(categories => console.log('Received categories:', categories)));
+    return this.http.get<Category[]>(URL_select)
   }
 
   // get_category(id: String): Observable<Category> {
@@ -35,7 +31,7 @@ export class CategoryService {
   // delete_category(id: String): Observable<Category[]> {
   //   return this.http.delete<Category[]>(`${URL}/${id}`);
   // }
-  
+
   // delete_all_categories(): Observable<Category[]> {
   //   return this.http.delete<Category[]>(`${URL}`);
   // }

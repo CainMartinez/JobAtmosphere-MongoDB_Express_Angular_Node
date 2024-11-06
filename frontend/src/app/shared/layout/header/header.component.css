@@ -1,68 +1,12 @@
-.header {
-  background-color: #4d93ad;
-  color: #fff;
-  padding: 10px 0;
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.nav-link {
+  font-size: 1.1rem;
 }
 
-.header .logo a {
-  color: #fff;
-  font-size: 24px;
-  text-decoration: none;
-}
-
-.header nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  padding: 0;
-  margin: 0;
-}
-
-.header nav ul li {
-  display: flex;
-  align-items: center;
-}
-
-.header nav ul li a {
-  color: #fff;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.header nav ul li a img {
-  width: 20px;
-  height: 20px;
-}
-
-.header nav ul li a:hover {
-  text-decoration: underline;
-}
-
-.header .nav-link img.user-pic {
+img {
   border-radius: 50%;
-}
-.jobs{
-  color: #333;
-}
-.net{
-  color: rgb(85, 251, 118);
-}
-/* Estilo por defecto para los enlaces de navegación */
-.navbar-nav .nav-link {
-  color: white; /* Color blanco por defecto */
-  transition: all 0.3s ease; /* Transición suave para los cambios */
-}
-
-/* Estilo para el hover */
-.navbar-nav .nav-link:hover {
-  font-weight: bold; /* Negrita al pasar el cursor */
-  font-size: calc(1em + 1px); /* Aumenta la fuente en 1px */
 }

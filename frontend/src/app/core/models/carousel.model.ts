@@ -4,11 +4,6 @@ export interface CarouselHome {
     category_name?: String;
   }
   
-export interface CarouselDetails {
+  export interface CarouselDetails {
     images?: String;
   }
-export interface CarouselConfig {
-  categories?: CarouselHome[];
-  jobs_details?: CarouselDetails[];
-  page?: string;
-}

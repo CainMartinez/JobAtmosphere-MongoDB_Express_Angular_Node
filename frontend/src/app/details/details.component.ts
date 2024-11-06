@@ -1,54 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Job } from '../core/models/job.model';
 import { JobService } from '../core/services/job.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from '../core/models/comment.model';
 
 @Component({
-    selector: 'app-details',
-    templateUrl: './details.component.html',
-    styleUrls: ['./details.component.css'],
+  selector: 'app-details',
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent implements OnInit {
-    job!: Job;
-    slug!: string | null;
-    selectedComment!: Comment | null;
+  job!: Job;
+  slug!: string | null;
+  selectedComment: Comment | null = null;
 
-    constructor(
-        private jobService: JobService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router
-    ) { }
+  constructor(
+    private JobService: JobService,
+    private ActivatedRoute: ActivatedRoute,
+    private router: Router
+  ) { }
 
-    ngOnInit(): void {
-        this.slug = this.activatedRoute.snapshot.paramMap.get('slug');
-        this.getJob();
+  ngOnInit(): void {
+    this.slug = this.ActivatedRoute.snapshot.paramMap.get('slug');
+    console.log(this.slug);
+    this.get_job();
+  }
+
+  get_job() {
+    if (typeof this.slug === 'string') {
+      this.JobService.get_job(this.slug).subscribe((data: any) => {
+        this.job = data.jobs;
+        console.log(this.job);
+      });
+    } else {
+      console.log('fallo al encontrar el job');
+      this.router.navigate(['/']);
     }
+  }
 
-    getJob() {
-        if (typeof this.slug === 'string') {
-            this.jobService.get_job(this.slug).subscribe((data: any) => {
-                this.job = data.jobs;
-            });
-        } else {
-            this.router.navigate(['/']);
-        }
-    }
+  onToggleFavorite(favorited: boolean) {
+    this.job.favorited = favorited;
 
-    onEditComment(comment: Comment) {
-        this.selectedComment = comment;
+    if (favorited) {
+      this.job.favoritesCount++;
+    } else {
+      this.job.favoritesCount--;
     }
+  }
 
-    onSubmitComment() {
-        this.selectedComment = null;
-    }
-    onToggleFavorite(favorited: boolean) {
-        this.job.favorited = favorited;
+  onEditComment(comment: Comment) {
+    this.selectedComment = comment;
+  }
 
-        if (favorited) {
-            this.job.favoritesCount++;
-        } else {
-            this.job.favoritesCount--;
-        }
-    }
+  onSubmitComment() {
+    this.selectedComment = null;
+  }
+
+  convertCompanyNameToUrl(companyName: string): string {
+    return companyName.replace(/\s+/g, '-');
+  }
 }

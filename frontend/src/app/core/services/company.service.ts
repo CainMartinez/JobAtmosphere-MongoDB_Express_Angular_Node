@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 import { Company } from '../models/company.model';
+import { Job } from '../models/job.model';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
@@ -63,8 +64,8 @@ export class CompanyService {
         return this.currentCompanySubject.value;
     }
 
-    getCompanyProfile(companyId: string): Observable<Company> {
-        return this.apiService.get(`/company/${companyId}`, undefined, 3001).pipe(
+    getCompanyProfile(): Observable<Company> {
+        return this.apiService.get(`/company/dashboard`, undefined, 3001).pipe(
             map((data: any) => {
                 this.currentCompanySubject.next(data.company);
                 return data.company;
@@ -72,9 +73,11 @@ export class CompanyService {
         );
     }
 
-    update(company: any): Observable<Company> {
-        return this.apiService.put('/company', { company }, 3001).pipe(
+    update(updatedData: any): Observable<Company> {
+        console.log("Update Data: 3", updatedData);
+        return this.apiService.put('/company', updatedData, 3001).pipe(
             map((data: any) => {
+                console.log("Service Update: 4", data.company);
                 this.currentCompanySubject.next(data.company);
                 return data.company;
             })
@@ -88,4 +91,28 @@ export class CompanyService {
             })
         );
     }
+
+    getCompanyJobs(): Observable<Job[]> {
+        return this.apiService.get('/job', undefined, 3001).pipe(
+            map((response: any) => {
+                console.log('Trabajos de la empresa:', response.jobs);
+                return response.jobs;
+            })
+        );
+    }
+
+    getCompanyByName(companyName: string): Observable<Company> {
+        console.log("Company Name", companyName);
+        return this.apiService.get(`/details/${companyName}`, undefined, 3001).pipe(
+            map((response: any) => {
+                console.log('Company:', response.company);
+                return response.company;
+            })
+        );
+    }
+
+    requestRecruiter(jobSlug: string): Observable<void> {
+        return this.apiService.post(`/job/${jobSlug}/assign`, {}, 3001);
+    }
+
 }

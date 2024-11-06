@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../app/core/services/user.service';
 import { JwtService } from '../app/core/services/jwt.service';
+import { UserService } from '../app/core/services/user.service';
 import { CompanyService } from '../app/core/services/company.service';
 import { RecruiterService } from '../app/core/services/recruiter.service';
 import { UserTypeService } from '../app/core/services/user-type.service';
 import { jwtDecode } from 'jwt-decode';
-import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +14,8 @@ import { Router, NavigationEnd } from '@angular/router';
 export class AppComponent implements OnInit {
 
   constructor(
-    private userService: UserService,
-    private router: Router,
     private jwtService: JwtService,
+    private userService: UserService,
     private companyService: CompanyService,
     private recruiterService: RecruiterService,
     private userTypeService: UserTypeService
@@ -61,10 +59,5 @@ export class AppComponent implements OnInit {
     } catch (error) {
       console.error('Error en ngOnInit:', error);
     }
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
   }
 }

@@ -6,88 +6,88 @@ import { User } from '../models/user.model';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class UserService {
-    private currentUserSubject = new BehaviorSubject<User>({} as User);
-    public currentUser = this.currentUserSubject
-        .asObservable()
-        .pipe(distinctUntilChanged());
+  private currentUserSubject = new BehaviorSubject<User>({} as User);
+  public currentUser = this.currentUserSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-    private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
-    public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-    constructor(private apiService: ApiService, private jwtService: JwtService) { }
+  constructor(private apiService: ApiService, private jwtService: JwtService) { }
 
-    populate() {
-        const token = this.jwtService.getToken();
-        if (token) {
-            this.apiService.get('/user', undefined, 3000).subscribe(
-                (data) => {
-                    return this.setAuth({ ...data.user, token });
-                },
-                (err) => {
-                    this.purgeAuth();
-                }
-            );
-        } else {
-            this.purgeAuth();
+  populate() {
+    const token = this.jwtService.getToken();
+    if (token) {
+      this.apiService.get('/user', undefined, 3000).subscribe(
+        (data) => {
+          return this.setAuth({ ...data.user, token });
+        },
+        (err) => {
+          this.purgeAuth();
         }
+      );
+    } else {
+      this.purgeAuth();
     }
+  }
 
-    setAuth(user: User) {
-        // console.log(user);
-        this.jwtService.saveToken(user.token);
-        this.currentUserSubject.next(user);
-        this.isAuthenticatedSubject.next(true);
-    }
+  setAuth(user: User) {
+    // console.log(user);
+    this.jwtService.saveToken(user.token);
+    this.currentUserSubject.next(user);
+    this.isAuthenticatedSubject.next(true);
+  }
 
-    purgeAuth() {
-        this.jwtService.destroyToken();
-        this.currentUserSubject.next({} as User);
-        this.isAuthenticatedSubject.next(false);
-    }
+  purgeAuth() {
+    this.jwtService.destroyToken();
+    this.currentUserSubject.next({} as User);
+    this.isAuthenticatedSubject.next(false);
+  }
 
-    attemptAuth(type: string, credentials: any): Observable<User> {
-        const route = type === 'login' ? '/login' : '/register';
-        return this.apiService.post(`/users${route}`, { user: credentials }, 3000).pipe(
-            map((data: any) => {
-                if (type === 'login') {
-                    // console.log(data);
-                    this.setAuth(data.user);
-                }
-                return data;
-            })
-        );
-    }
+  attemptAuth(type: string, credentials: any): Observable<User> {
+    const route = type === 'login' ? '/login' : '/register';
+    return this.apiService.post(`/users${route}`, { user: credentials }, 3000).pipe(
+      map((data: any) => {
+        if (type === 'login') {
+          // console.log(data);
+          this.setAuth(data.user);
+        }
+        return data;
+      })
+    );
+  }
 
-    getCurrentUser(): User {
-        return this.currentUserSubject.value;
-    }
+  getCurrentUser(): User {
+    return this.currentUserSubject.value;
+  }
 
-    getUserProfile(): Observable<User> {
-        return this.apiService.get('/user/profile', undefined, 3000).pipe(
-            map((data: any) => {
-                this.currentUserSubject.next(data.user);
-                return data.user;
-            })
-        );
-    }
+  getUserProfile(): Observable<User> {
+    return this.apiService.get('/user/profile', undefined, 3000).pipe(
+      map((data: any) => {
+        this.currentUserSubject.next(data.user);
+        return data.user;
+      })
+    );
+  }
 
-    update(user: any): Observable<User> {
-        return this.apiService.put('/user', { user }, 3000).pipe(
-            map((data: any) => {
-                this.currentUserSubject.next(data.user);
-                return data.user;
-            })
-        );
-    }
+  update(user: any): Observable<User> {
+    return this.apiService.put('/user', { user }, 3000).pipe(
+      map((data: any) => {
+        this.currentUserSubject.next(data.user);
+        return data.user;
+      })
+    );
+  }
 
-    logout(): Observable<void> {
-        return this.apiService.post('/users/logout', {}, 3000).pipe(
-            map(() => {
-                this.purgeAuth();
-            })
-        );
-    }
+  logout(): Observable<void> {
+    return this.apiService.post('/users/logout', {}, 3000).pipe(
+      map(() => {
+        this.purgeAuth();
+      })
+    );
+  }
 }

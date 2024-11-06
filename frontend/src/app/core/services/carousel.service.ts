@@ -3,10 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
 import { CarouselDetails, CarouselHome } from '../models/carousel.model';
-import { environment } from '../../environments/environment';
 
-
-const URL = `${environment.URL}/carousel`;
+const URL = 'http://localhost:3000/carousel';
 
 @Injectable({
   providedIn: 'root',

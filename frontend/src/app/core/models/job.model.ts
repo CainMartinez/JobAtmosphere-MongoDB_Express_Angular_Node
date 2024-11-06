@@ -1,4 +1,5 @@
 export interface Job {
+    id: string;
     slug: string;
     name: string;
     salary: number;
@@ -9,5 +10,7 @@ export interface Job {
     id_cat: string;
     favorited: boolean;
     favoritesCount: number;
-    comments: [];
+    comments: [],
+    application: [],
+    isActive: boolean;
 }

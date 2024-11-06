@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { Comment } from '../../core/models/comment.model';
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
-import { CommentsService } from '../../core/services/comment.service';
+import { CommentService } from '../../core/services/comment.service';
 
 @Component({
     selector: 'app-list-comment',
@@ -18,14 +18,12 @@ export class ListCommentComponent implements OnInit, OnDestroy {
     @Output() createCommentEvent = new EventEmitter<void>();
 
     subscription!: Subscription;
-    authSubscription!: Subscription;
-    currentUser!: User;
+    currentUser!: User | null;
     isAddingComment: boolean = false;
-    isAuthenticated: boolean = false;
 
     constructor(
         private userService: UserService,
-        private commentsService: CommentsService,
+        private commentService: CommentService,
         private cd: ChangeDetectorRef
     ) { }
 
@@ -33,32 +31,31 @@ export class ListCommentComponent implements OnInit, OnDestroy {
         this.loadComments();
         this.subscription = this.userService.currentUser.subscribe(
             (userData: User) => {
-                this.currentUser = userData;
-                this.cd.markForCheck();
-            }
-        );
-        this.authSubscription = this.userService.isAuthenticated.subscribe(
-            (isAuthenticated: boolean) => {
-                this.isAuthenticated = isAuthenticated;
-                this.cd.markForCheck();
+                if (userData && Object.keys(userData).length > 0) {
+                    this.currentUser = userData;
+                    console.log(this.currentUser);
+                    this.cd.markForCheck();
+                } else {
+                    this.currentUser = null;
+                }
             }
         );
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-        this.authSubscription.unsubscribe();
     }
 
     loadComments() {
-        this.commentsService.getAll(this.slug).subscribe((comments: Comment[]) => {
+        this.commentService.getAll(this.slug).subscribe((comments: Comment[]) => {
             this.comments = comments;
+            console.log(this.comments);
             this.cd.markForCheck();
         });
     }
 
     canModify(comment: Comment): boolean {
-        return this.currentUser.username === comment.author.username;
+        return this.currentUser?.username === comment.author.username;
     }
 
     createComment() {
@@ -66,7 +63,7 @@ export class ListCommentComponent implements OnInit, OnDestroy {
     }
 
     deleteClicked(comment: Comment) {
-        this.commentsService.destroy(comment.id, this.slug).subscribe(() => {
+        this.commentService.delete(comment.id, this.slug).subscribe(() => {
             this.comments = this.comments.filter(c => c.id !== comment.id);
         });
     }
@@ -75,16 +72,7 @@ export class ListCommentComponent implements OnInit, OnDestroy {
         this.editComment.emit(comment);
     }
 
-    hasWrittenComment(): boolean {
-        return this.comments.some(comment => this.canModify(comment));
-    }
-
-    showCommentForm() {
-        this.isAddingComment = true;
-    }
-
     onCommentSubmitted() {
-        this.isAddingComment = false;
         this.loadComments();
     }
 }

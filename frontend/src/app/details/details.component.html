@@ -1,26 +1,61 @@
-<div class="container mt-5 details_page">
-    <div *ngIf="!job" class="alert alert-warning text-center">No job found</div>
-    <div class="job card mb-3" *ngIf="job">
-        <div class="card-header">
-            <app-carousel></app-carousel>
-        </div>
-        <div class="card-body">
-            <h3 class="card-title">{{job.name}}</h3>
-            <h4 class="card-subtitle mb-2 text-muted">{{job.company}}</h4>
-            <p class="card-text"><strong>Description: </strong>{{job.description}}</p>
-            <p class="card-text"><strong>Salary: </strong>{{job.salary}}€</p>
-            <div id="comments_list">
-                <h2 align="center">Comments</h2>
-                <app-list-comment [slug]="slug ?? ''" (editComment)="onEditComment($event)">
-                </app-list-comment>
-                <app-form-comment *ngIf="selectedComment" [slug]="slug ?? ''" [comment]="selectedComment"
-                    (submitComment)="onSubmitComment()">
-                </app-form-comment>
+<div class="details_page container mt-5">
+    <div class="row">
+        <!-- Información del trabajo -->
+        <div class="col-md-8 job-info">
+            <div *ngIf="!job">No job</div>
+            <div class="job" *ngIf="job">
+                <div class="job-info">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" class="align-middle">
+                                    <img class="job-logo" src="{{job.img}}" alt="{{job.company}}">
+                                </td>
+                                <td>
+                                    <h3>{{job.name}}</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="company-name">
+                                        <a [routerLink]="['/details-company', convertCompanyNameToUrl(job.company)]">{{job.company}}</a>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="job-description">
+                        <h4>Descripción del puesto</h4>
+                        <p>{{job.description}}</p>
+                    </div>
+                    <div class="job-salary">
+                        <h4>Salario</h4>
+                        <p>{{ job.salary | number:'1.0-0':'en' }}€</p>
+                    </div>
+                    <div class="apply-button">
+                        <button class="btn btn-primary">Aplicar</button>
+                        <app-favorite-button [jobs]="job" (toggle)="onToggleFavorite($event)">
+                            {{ job.favorited ? 'Unfavorite' : 'Favorite' }} <span class="counter"> ( {{
+                                job.favoritesCount }} )</span>
+                        </app-favorite-button>
+                    </div>
+                </div>
             </div>
-            <app-favorite-button [jobs]="job" (toggle)="onToggleFavorite($event)">
-                {{ job.favorited ? 'Unfavorite' : 'Favorite' }} <span class="counter"> ( {{
-                    job.favoritesCount }} )</span>
-            </app-favorite-button>
+        </div>
+        <!-- Carousel -->
+        <div class="col-md-4 carousel-container">
+            <app-carousel page="details"></app-carousel>
+        </div>
+
+        <!-- Comentarios -->
+        <div id="comments_list">
+            <h3>Comments Section</h3>
+            <hr class="my-4">
+            <app-list-comment [slug]="slug ?? ''" (editComment)="onEditComment($event)">
+            </app-list-comment>
+            <app-form-comment *ngIf="selectedComment" [slug]="slug ?? ''" [comment]="selectedComment"
+                (submitComment)="onSubmitComment()">
+            </app-form-comment>
         </div>
     </div>
 </div>

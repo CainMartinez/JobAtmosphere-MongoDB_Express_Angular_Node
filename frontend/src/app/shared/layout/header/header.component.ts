@@ -1,59 +1,107 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/core/models/user.model';
+import { jwtDecode } from 'jwt-decode';
+import { JwtService } from '../../../core/services/jwt.service';
 import { UserService } from '../../../core/services/user.service';
-import Swal from 'sweetalert2';
+import { CompanyService } from '../../../core/services/company.service';
+import { RecruiterService } from '../../../core/services/recruiter.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnInit {
 
-  bars: Boolean = false;
-  logged: Boolean = false;
-  currentUser: User = {} as User;
+  userType: string | null = null;
+  userImage: string | null = null;
+  logged = false;
 
   constructor(
+    private router: Router,
+    private jwtService: JwtService,
     private userService: UserService,
-    private cd: ChangeDetectorRef,
-    private router: Router
-  ) { }
+    private companyService: CompanyService,
+    private recruiterService: RecruiterService) { }
 
-  ngOnInit() {
-    this.userService.currentUser.subscribe(
-      (userData) => {
-        this.currentUser = userData;
-        this.logged = !!userData.username;
-        this.cd.markForCheck();
+  ngOnInit(): void {
+    // Obtener el tipo de usuario decodificando el token almacenado
+    const token = this.jwtService.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        this.userType = decodedToken?.user?.typeuser || decodedToken?.typeuser;
+
+        this.loadUserData();
+        this.logged = true;
+      } catch (error) {
+        console.error('Error decodificando el token:', error);
       }
-    );
+    }
   }
 
-  logout() {
-    this.userService.logout().subscribe({
-      next: () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Logged out successfully',
-          text: 'See you soon!'
-        }).then(() => {
-          this.router.navigateByUrl('/');
-        });
-      },
-      error: (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Logout failed',
-          text: 'Please try again later.'
-        });
-      }
-    });
+  onProfileClick(): void {
+    // Redirigir según el tipo de usuario
+    if (this.userType === 'client') {
+      this.router.navigate(['/profile']);
+    } else if (this.userType === 'company') {
+      this.router.navigate(['/company-dashboard']);
+    } else if (this.userType === 'recruiter') {
+      this.router.navigate(['/recruiter-dashboard']);
+    } else {
+      // Si no hay un tipo de usuario válido, redirigir al login
+      this.router.navigate(['/login']);
+    }
   }
 
-  nav_bars() {
-    this.bars = !this.bars;
+  logout(): void {
+    this.jwtService.destroyToken();
+    if (this.userType === 'client') {
+      this.userService.logout();
+    } else if (this.userType === 'company') {
+      this.companyService.logout();
+    } else if (this.userType === 'recruiter') {
+      this.recruiterService.logout();
+    }
+    this.router.navigate(['/login']);
+    window.location.reload();
+  }
+
+  loadUserData(): void {
+    if (this.userType === 'client') {
+      this.userService.getUserProfile().subscribe({
+        next: (user) => {
+          console.log('Datos del cliente:', user);
+          this.userImage = user.image;
+        },
+        error: (err) => {
+          console.error('Error al obtener datos del cliente:', err);
+        }
+      });
+    } else if (this.userType === 'company') {
+      this.companyService.getCompanyProfile().subscribe(
+        data => {
+          console.log('Datos de la empresa:', data);
+          this.userImage = data.image ?? null;
+        },
+        error => {
+          console.error('Error al obtener datos de la empresa:', error);
+        }
+      );
+    } else if (this.userType === 'recruiter') {
+      this.recruiterService.getRecruiterProfile().subscribe({
+        next: (recruiter) => {
+          // this.userImage = recruiter.image;
+          this.userImage = 'https://via.placeholder.com/150';
+        },
+        error: (err) => {
+          console.error('Error al obtener datos del reclutador:', err);
+        }
+      });
+    }
+  }
+
+  isClient(): boolean {
+    return this.userType === 'client';
   }
 }

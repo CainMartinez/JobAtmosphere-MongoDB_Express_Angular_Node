@@ -2,72 +2,76 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { Job } from '../models/job.model';
-import { environment } from '../../environments/environment';
 import { Filters } from '../models/filters.model';
 
+const URL = 'http://localhost:3000/jobs';
+const URLcat = 'http://localhost:3000/categories';
+const URLfav = 'http://localhost:3000';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class JobService {
-    
-    private readonly apiUrl = environment.api_url;
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  //GET ALL
+  get_jobs(): Observable<Job[]> {
+    return this.http.get<Job[]>(URL);
+  }
 
-    //GET ALL
-    get_jobs(): Observable<Job[]> {
-        return this.http.get<Job[]>(`${this.apiUrl}/jobs`);
-    }
+  //FILTERS
+  get_jobs_filter(filters: Filters): Observable<Job[]> {
+    let params = {};
+    params = filters;
+    return this.http.get<Job[]>(URL, { params });
+  }
 
-    //GET ONE
-    get_job(slug: String): Observable<Job> {
-        return this.http.get<Job>(`${this.apiUrl}/jobs/${slug}`);
-    }
-    get_jobs_filter(filters : Filters): Observable<Job[]> {
-        let params = {};
-        params = filters;
-        return this.http.get<Job[]>(`${this.apiUrl}/jobs` , {params});
-    }
-    //CREATE
-    // create_job(job: Job): Observable<Job[]> {
-    //     return this.http.post<Job[]>(`${this.apiUrl}/jobs`, job);
-    // }
+  //GET ONE
+  get_job(slug: String): Observable<Job> {
+    return this.http.get<Job>(`${URL}/${slug}`);
+  }
 
-    //UPDATE ONE
-    // update_job(job: Job, slug: String): Observable<Job[]> {
-    //     return this.http.put<Job[]>(`${this.apiUrl}/jobs/${slug}`, job);
-    // }
+  //CREATE
+  create_job(job: Job): Observable<Job[]> {
+    return this.http.post<Job[]>(URL, job);
+  }
 
-    //DELETE ONE
-    // delete_job(slug: any): Observable<Job[]> {
-    //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs/${slug}`);
-    // }
+  //UPDATE ONE
+  update_job(job: Job, slug: String): Observable<Job[]> {
+    return this.http.put<Job[]>(`${URL}/${slug}`, job);
+  }
 
-    //DELETE ALL
-    // delete_all_jobs(): Observable<Job[]> {
-    //     return this.http.delete<Job[]>(`${this.apiUrl}/jobs`);
-    // }
+  //DELETE ONE
+  delete_job(slug: any): Observable<Job[]> {
+    return this.http.delete<Job[]>(`${URL}/${slug}`);
+  }
 
-    getJobsByCategory(slug: String): Observable<Job[]> {
-        return this.http.get<any>(`${this.apiUrl}/categories/${slug}/jobs`);
-    }
-    //SEARCH
-    find_job_name(search: string): Observable<any> {
-        return this.http.get<Job>(`${this.apiUrl}/jobs?name=${search}`).pipe(
-            map((data) => {
-                return data;
-            })
-        );
-    }
+  //DELETE ALL
+  delete_all_jobs(): Observable<Job[]> {
+    return this.http.delete<Job[]>(`${URL}`);
+  }
 
-    //FAVORITE
-    favorite(id: String): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${id}/favorite`, {})
-    }
+  //GET JOBS BY CATEGORY
+  getJobsByCategory(slug: String): Observable<Job[]> {
+    return this.http.get<Job[]>(`${URLcat}/${slug}/jobs`);
+  }
 
-    //UNFAVORITE
-    unfavorite(id: String): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/${id}/favorite`)
-    }
+  //SEARCH
+  find_job_name(search: string): Observable<any> {
+    return this.http.get<Job>(`${URL}?name=${search}`).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  //FAVORITE
+  favorite(id: String): Observable<any> {
+    return this.http.post(`${URLfav}/${id}/favorite`, {})
+  }
+
+  //UNFAVORITE
+  unfavorite(id: String): Observable<any> {
+    return this.http.delete(`${URLfav}/${id}/favorite`)
+  }
 }

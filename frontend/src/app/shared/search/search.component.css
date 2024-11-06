@@ -1,42 +1,42 @@
-body {
-    background-color: #8f4df8;
+.container.subheader {
+  /* background-color: #f8f9fa;  */
+  /* padding: 20px; */
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
-.form {
-    position: relative;
+.search {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form .fa-search {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: #9ca3af;
+.search .fa-search {
+  margin-right: 10px;
+  color: #6c757d;
 }
 
-.form span {
-    position: absolute;
-    right: 17px;
-    top: 13px;
-    padding: 2px;
-    border-left: 1px solid #d1d5db;
+.search .input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  font-size: 1rem;
 }
 
-.left-pan {
-    padding-left: 7px;
+.search .input::placeholder {
+  color: #6c757d;
 }
 
-.left-pan i {
-    padding-left: 10px;
+.search .btn {
+  margin-left: 10px;
 }
 
-.form-input {
-    height: 55px;
-    text-indent: 33px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra para efecto 3D */
-}
-
-.form-input:focus {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.2); /* Sombra más intensa al enfocar */
-    border: none;
+.search .fas.fa-search {
+  margin-left: 10px;
+  color: #6c757d;
 }

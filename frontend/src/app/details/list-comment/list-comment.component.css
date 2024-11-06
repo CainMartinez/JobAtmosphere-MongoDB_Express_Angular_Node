@@ -1,20 +1,51 @@
-.testimonial-card .card-up {
-    height: 120px;
-    overflow: hidden;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-
+.comment-container {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
-.testimonial-card {
-    margin-bottom: 40px;
+.comment-header {
+    display: flex;
+    align-items: center;
     width: 100%;
 }
 
-.testimonial-card .avatar {
-    width: 110px;
-    margin-top: -60px;
-    overflow: hidden;
-    border: 3px solid #fff;
-    border-radius: 50%;
+.comment-header img {
+    margin-right: 10px;
+}
+
+.comment-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-details h3 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.comment-details hr {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.comment-details p {
+    margin: 0;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.delete-button {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
