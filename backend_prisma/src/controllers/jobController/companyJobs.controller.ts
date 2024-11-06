@@ -3,13 +3,6 @@ import getJobsByIds from "../../utils/db/job/getJobsByIdsPrisma";
 import jobViewer from "../../view/jobViewer";
 import prisma from "../../utils/db/prisma";
 
-/**
- * Controlador para obtener todos los jobs de una compañía.
- * @param req Request
- * @param res Response
- * @param next NextFunction
- */        
-
 export default async function getCompanyJobs(req: Request, res: Response, next: NextFunction) {
     try {
         const companyEmail = (req as any).user.email;

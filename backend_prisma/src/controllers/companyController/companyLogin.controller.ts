@@ -10,7 +10,7 @@ export default async function companyLogin(
 ) {
     const { email, password } = req.body;
 
-    // console.log('Request body:', req.body);
+    console.log('Request body:', req.body);
 
     try {
         // Buscar la empresa por email
@@ -24,17 +24,17 @@ export default async function companyLogin(
 
         // Verificar si la empresa existe
         if (!company) {
-            // console.log('Company not found');
-            return res.status(404).json({ message: 'Company not found' });
+            console.log('Company not found');
+            return res.status(404).json({ message: 'Empresa no encontrada' });
         }
 
         // Verificar la contraseña usando argon2
         const validPassword = await argon2.verify(company.password, password);
-        // console.log('Password valid:', validPassword);
+        console.log('Password valid:', validPassword);
 
         if (!validPassword) {
             console.log('Invalid password');
-            return res.status(401).json({ message: 'Invalid password' });
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         // Generar el token JWT

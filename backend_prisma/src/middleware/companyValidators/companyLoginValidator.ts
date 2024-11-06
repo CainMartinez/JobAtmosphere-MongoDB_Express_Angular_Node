@@ -10,7 +10,7 @@ const validatorLogin = [
         .custom(async (email) => {
             const company = await prisma.companies.findUnique({ where: { email } });
             if (!company) {
-                throw new Error('Company not found');
+                throw new Error('Empresa no encontrada');
             }
             return true;
         }),

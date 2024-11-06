@@ -47,7 +47,7 @@ model Jobs {
   recruiter      String?
   salary         Int
   slug           String   @unique(map: "slug_1")
-  applications   Json?
+  application   Json?
 }
 
 model Users {
@@ -72,6 +72,7 @@ model Companies {
   password        String
   email           String   @unique
   location        String?
+  image           String
   n_employee      Int
   description     String?
   createdAt       DateTime @default(now()) @db.Date
@@ -80,5 +81,4 @@ model Companies {
   followers       Int?
   jobs            String[] @db.ObjectId
   roles           String[] @default(["company"]) // Se añade un campo de roles
-  image           String?
 }

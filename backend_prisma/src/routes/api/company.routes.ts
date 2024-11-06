@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
-import companyGetByEmail from '../../controllers/companyController/companyGetByEmail.controller';
+import companyGetById from '../../controllers/companyController/companyGetById.controller';
 import companyCreate from '../../controllers/companyController/companyCreate.controller';
+import validatorListOne from '../../middleware/companyValidators/companyListOneValidator';
 import validatorCreate from '../../middleware/companyValidators/companyCreateValidator';
 import { roleMiddleware } from '../../middleware/companyValidators/RoleMiddleware';
 import companyLogin from "../../controllers/companyController/companyLogin.controller";
@@ -11,7 +12,6 @@ import updateCompany from "../../controllers/companyController/companyUpdate.con
 import { companyDashboard } from "../../controllers/companyController/companyDashboard.controller";
 import getCompanyJobs from "../../controllers/jobController/companyJobs.controller";
 import companyGetByName from "../../controllers/companyController/companyGetByName.controller";
-import companyGetByNameValidator from "../../middleware/companyValidators/companyGetByNameValidator";
 
 const router = Router();
 
@@ -27,11 +27,9 @@ router.post("/company/register", validatorCreate, (req: Request, res: Response, 
 
 // Profile
 router.get("/company/:id", authMiddleware, (req: Request, res: Response, next: NextFunction) => {
-    companyGetByEmail(req, res, next);
+    companyGetById(req, res, next);
 });
-router.get("/details/:name", companyGetByNameValidator, (req: Request, res: Response, next: NextFunction) => {
-    companyGetByName(req, res, next);
-});
+
 // Dashboard
 router.get('/company/dashboard', roleMiddleware('company'), (req: Request, res: Response) => {
     companyDashboard(req, res);
@@ -61,13 +59,14 @@ router.get(
     authMiddleware,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await companyDashboard(req, res);
+            await companyGetById(req, res, next);
         } catch (error) {
             next(error);
         }
     }
 );
 
+// Get company jobs
 router.get(
     "/job",
     authMiddleware,
@@ -79,5 +78,10 @@ router.get(
         }
     }
 );
+
+// Get company by name
+router.get("/details/:name", (req: Request, res: Response, next: NextFunction) => {
+    companyGetByName(req, res, next);
+});
 
 export default router;

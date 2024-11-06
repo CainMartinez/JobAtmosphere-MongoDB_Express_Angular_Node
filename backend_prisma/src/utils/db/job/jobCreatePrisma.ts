@@ -14,7 +14,7 @@ interface JobData {
 }
 
 export default async function jobCreatePrisma(data: JobData) {
-    // Generar el slug del nuevo job
+
     const slug = `${data.name.toLowerCase().replace(/ /g, '-')}-${Math.random().toString(36).substr(2, 9)}`;
 
     const newJob = await prisma.jobs.create({
@@ -27,7 +27,7 @@ export default async function jobCreatePrisma(data: JobData) {
             img: data.img,
             id_cat: data.id_cat,
             isActive: false,
-            recruiter: '',  // Inicialmente vacío, hasta que se asigne un recruiter
+            recruiter: '',
             slug,
             favoritesCount: 0,
             comments: [],
@@ -67,17 +67,16 @@ export default async function jobCreatePrisma(data: JobData) {
             where: { id: category.id },
             data: {
                 jobs: {
-                    push: newJob.id  // Agregar el id del nuevo job al array de jobs de la categoría
+                    push: newJob.id
                 }
             }
         });
-
         // Actualizar el array de jobs en la compañía
         await prisma.companies.update({
             where: { company_name: data.company },
             data: {
                 jobs: {
-                    push: newJob.id  // Agregar el slug del nuevo job al array de jobs de la compañía
+                    push: newJob.id
                 }
             }
         });
