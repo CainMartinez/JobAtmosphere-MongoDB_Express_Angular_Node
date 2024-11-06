@@ -13,7 +13,7 @@ const createJob = asyncHandler(async (req, res) => {
         company: req.body.company || null,
         images: req.body.images,
         img: req.body.img || null,
-        id_cat: req.body.id_cat || null
+        id_cat: req.body.id_cat || null,
     };
 
     const id_cat = req.body.id_cat;

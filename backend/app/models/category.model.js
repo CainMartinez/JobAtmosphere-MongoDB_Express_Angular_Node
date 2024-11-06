@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const slug = require('slugify');
 const uniqueValidator = require('mongoose-unique-validator');
 
+// #region SCHEMA
 const category_schema = mongoose.Schema({
     slug: {
         type: String,
@@ -25,6 +26,7 @@ const category_schema = mongoose.Schema({
     collection: 'Categories'
 });
 
+// #region PLUGINS
 category_schema.plugin(uniqueValidator, { msg: "already taken" });
 
 category_schema.pre('validate', function (next) {
@@ -34,10 +36,12 @@ category_schema.pre('validate', function (next) {
     next();
 });
 
+// #region SLUGIFY
 category_schema.methods.slugify = function () {
     this.slug = slug(this.category_name) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36);
 };
 
+// #region CATEGORY RESPONSE
 category_schema.methods.toCategoryResponse = function () {
     return {
         slug: this.slug,
@@ -48,6 +52,7 @@ category_schema.methods.toCategoryResponse = function () {
     };
 };
 
+// #region CAROUSEL RESPONSE
 category_schema.methods.toCategoryCarouselResponse = function () {
     return {
         slug: this.slug,
@@ -56,7 +61,7 @@ category_schema.methods.toCategoryCarouselResponse = function () {
     };
 };
 
-
+// #region ADD JOB
 category_schema.methods.addJob = function (job_id) {
     if (this.jobs.indexOf(job_id) === -1) {
         this.jobs.push(job_id);
@@ -64,6 +69,7 @@ category_schema.methods.addJob = function (job_id) {
     return this.save();
 };
 
+// #region REMOVE JOB
 category_schema.methods.removeJob = function (job_id) {
     if (this.jobs.indexOf(job_id) !== -1) {
         this.jobs.remove(job_id);
@@ -71,4 +77,5 @@ category_schema.methods.removeJob = function (job_id) {
     return this.save();
 };
 
+// #region EXPORTS
 module.exports = mongoose.model('Category', category_schema);

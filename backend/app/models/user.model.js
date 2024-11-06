@@ -3,6 +3,7 @@ const uniqueValidator = require("mongoose-unique-validator");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
+// #region SCHEMA
 const userSchema = new mongoose.Schema(
     {
         uuid: {
@@ -55,7 +56,7 @@ const userSchema = new mongoose.Schema(
             },
             status: {
                 type: String,
-                enum: ["pending", "accepted", "rejected"], 
+                enum: ["pending", "accepted", "rejected"],
                 default: "pending"
             }
         }],
@@ -77,12 +78,14 @@ userSchema.pre('save', function (next) {
 
 userSchema.plugin(uniqueValidator);
 
+// #region METHODS
 userSchema.methods.generateAccessToken = function () {
     const accessToken = jwt.sign(
         {
             user: {
                 id: this._id,
                 email: this.email,
+                typeuser: 'client'
             },
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -105,6 +108,7 @@ userSchema.methods.generateRefreshToken = function () {
     return refreshToken;
 };
 
+// #region TO USER RESPONSE
 userSchema.methods.toUserResponse = function () {
     const accessToken = this.generateAccessToken();
     const refreshToken = this.generateRefreshToken();
@@ -122,6 +126,7 @@ userSchema.methods.toUserResponse = function () {
     };
 };
 
+// #region TO USER DETAILS
 userSchema.methods.toUserDetails = function () {
     return {
         username: this.username,
@@ -135,7 +140,7 @@ userSchema.methods.toUserDetails = function () {
 
 // #region PROFILE
 userSchema.methods.toProfileUser = async function () {
-    const Job = require("./job.model"); // Lazy load del modelo Job
+    const Job = require("./job.model");
     const favoriteJobs = await Job.find({ _id: { $in: this.favoriteJob } }).exec();
 
     return {
@@ -143,7 +148,7 @@ userSchema.methods.toProfileUser = async function () {
         email: this.email,
         bio: this.bio,
         image: this.image,
-        favoriteJobs: await Promise.all(favoriteJobs.map(async job => await job.toJobProfileResponse(this))),
+        favoriteJobs: await Promise.all(favoriteJobs.map(async job => await job.toJobProfile(this))),
     };
 };
 
@@ -158,20 +163,7 @@ userSchema.methods.isFollowing = function (id) {
     return false;
 };
 
-// userSchema.methods.follow = function (id) {
-//      if (this.followingUsers.indexOf(id) === -1) {
-//           this.followingUsers.push(id);
-//      }
-//      return this.save();
-// };
-
-// userSchema.methods.unfollow = function (id) {
-//      if (this.followingUsers.indexOf(id) !== -1) {
-//           this.followingUsers.remove(id);
-//      }
-//      return this.save();
-// };
-
+// #region FOLLOW
 userSchema.methods.isFavorite = function (id) {
     const idStr = id.toString();
     for (const job of this.favoriteJob) {

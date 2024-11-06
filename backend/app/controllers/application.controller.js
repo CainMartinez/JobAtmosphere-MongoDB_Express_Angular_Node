@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler');
-const axios = require('axios');
 const Job = require("../models/job.model.js");
 const User = require("../models/user.model.js");
 
@@ -21,7 +20,7 @@ const applyToJob = asyncHandler(async (req, res) => {
     }
 
     // Añadir la aplicación al trabajo
-    job.application.push({ userId, status: "pending" });
+    job.aplication.push({ userId, status: "pending" });
     await job.save();
 
     // Actualizar las inscripciones del usuario
@@ -32,9 +31,8 @@ const applyToJob = asyncHandler(async (req, res) => {
 
     user.inscription.push({ jobId, status: "pending" });
     await user.save();
-    
-    return res.status(200).json({ message: "Successfully applied to the job" });
 
+    return res.status(200).json({ message: "Successfully applied to the job" });
 });
 
 module.exports = {

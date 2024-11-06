@@ -28,7 +28,7 @@ mongoose.Promise = global.Promise;
 
 // Conectar a la base de datos
 mongoose.connect(dbConfig.url, {
-   // useNewUrlParser: true
+   useNewUrlParser: true
 }).then(() => {
    console.log("Successfully connected to the database");
 }).catch(err => {
@@ -43,11 +43,10 @@ app.get('/', (req, res) => {
 });
 
 // Importar rutas
-require('../routes/category.routes')(app);
+require('../routes/category.routes.js')(app);
 require('../routes/job.routes.js')(app);
-require('../routes/carousel.routes')(app);
-require('../routes/user.routes')(app);
-// require('../routes/profile.routes.js')(app);
+require('../routes/carousel.routes.js')(app);
+require('../routes/user.routes.js')(app);
 require('../routes/comment.routes.js')(app);
 
 // Encender el servidor

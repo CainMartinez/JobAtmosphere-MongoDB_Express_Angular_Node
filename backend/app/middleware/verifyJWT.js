@@ -45,10 +45,7 @@ const verifyJWT = async (req, res, next) => {
         }
 
         // 6. Verificar el accessToken
-        jwt.verify(
-            accessToken,
-            process.env.ACCESS_TOKEN_SECRET,
-            async (err, decoded) => {
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
                 if (err) {
                     // Si el accessToken ha expirado, generar un nuevo accessToken usando el refreshToken
                     try {

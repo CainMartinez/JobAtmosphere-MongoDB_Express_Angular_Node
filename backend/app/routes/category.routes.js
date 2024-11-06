@@ -1,18 +1,18 @@
 module.exports = (app) => {
         const categories = require('../controllers/category.controller');
 
-        // create a new category
+        // CREATE CATEGORY
         app.post('/categories', categories.create);
 
-        // get all categories
+        // GET ALL
         app.get('/categories', categories.findAll);
 
-        // get one category
+        // GET ONE
         app.get('/categories/:slug', categories.findOne);
 
-        // delete one category
+        // DELETE ONE
         app.delete('/categories/:slug', categories.delete_category);
 
-        // Retrieve all Notes
+        // GET PRODUCTS BY CATEGORY
         app.get('/categories_select_filter', categories.findCategoriesSelect);
 }

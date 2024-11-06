@@ -21,7 +21,6 @@ const updateApplicationStatus = asyncHandler(async (req, res) => {
     if (!application) {
         return res.status(404).json({ message: "Application not found" });
     }
-
     application.status = newStatus;
     await job.save();
 
@@ -40,4 +39,5 @@ const updateApplicationStatus = asyncHandler(async (req, res) => {
 
     return res.status(200).json({ message: "Application status updated successfully" });
 });
+
 module.exports = updateApplicationStatus;

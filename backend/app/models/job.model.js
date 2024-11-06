@@ -39,22 +39,14 @@ const JobSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    author: {
+    recruiter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "Recruiter"
     },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
-    isActive:{
-        type: Boolean,
-        default: false
-    },
-    recruiter: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Recruiter"
-    },
     application: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -66,21 +58,25 @@ const JobSchema = mongoose.Schema({
             default: "pending"
         }
     }],
+    isActive: {
+        type: Boolean,
+        default: false
+    }
 },{
     collection: 'Jobs'
 });
 
+// #region PLUGINS
 JobSchema.plugin(uniqueValidator, { msg: "already taken" });
 
 JobSchema.pre('validate', async function (next) {
     if (!this.slug) {
-        // console.log('dentro del if');
         await this.slugify();
     }
-    // console.log(this.slug);
     next();
 });
 
+// #region SLUGIFY
 JobSchema.methods.slugify = async function () {
     this.slug = slugify(this.name) + '-' + (Math.random() * Math.pow(36, 10) | 0).toString(36);
 };
@@ -104,19 +100,24 @@ JobSchema.methods.toJobResponse = async function (user) {
     };
 };
 
-JobSchema.methods.toJobProfileResponse = async function (user) {
+JobSchema.methods.toJobProfile = async function (user) {
     return {
+        slug: this.slug,
         name: this.name,
+        salary: this.salary,
+        description: this.description,
         company: this.company,
+        id_cat: this.id_cat,
         img: this.img,
-        slug: this.slug
+        favorited: user ? user.isFavorite(this._id) : false,
+        favoritesCount: this.favoritesCount || 0,
     };
 };
 
 // #region CAROUSEL RESPONSE
 JobSchema.methods.toJobCarouselResponse = async function () {
     return {
-        images: this.images
+        images: this.images,
     };
 };
 
@@ -128,10 +129,9 @@ JobSchema.methods.updateFavoriteCount = async function () {
     return job.save();
 };
 
-
 // #region COMMENTS
 JobSchema.methods.addComment = function (commentId) {
-    this.comments.push(commentId);
+    this.comments.unshift(commentId);
     return this.save();
 };
 
@@ -141,4 +141,4 @@ JobSchema.methods.removeComment = function (commentId) {
 };
 
 // #region EXPORTS
-module.exports = mongoose.model('Job', JobSchema);
+module.exports = mongoose.model("Job", JobSchema);

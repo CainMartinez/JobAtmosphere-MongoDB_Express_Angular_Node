@@ -20,6 +20,7 @@ const get_carousel_category = asyncHandler( async (req, res) => {
 });
 
 
+//JOBS
 const get_carousel_job = asyncHandler(async (req, res) => {
     const jobs = await Job.findOne(req.params)
     if (!jobs) {
