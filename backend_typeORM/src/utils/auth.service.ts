@@ -11,8 +11,6 @@ export class AuthService {
         const secretKey = process.env.ACCESS_TOKEN_SECRET || 'maytheforcebewithyou';
         const expiresIn = process.env.TOKEN_EXPIRATION || '10h';
 
-        return jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn });
+        return jwt.sign({ id: user.id, email: user.email, typeuser: "recruiter" }, secretKey, { expiresIn });
     }
-
-    // Aquí podrías añadir más lógica relacionada con autenticación, como validar tokens, etc.
 }

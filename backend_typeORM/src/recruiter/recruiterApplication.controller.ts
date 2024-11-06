@@ -14,25 +14,25 @@ export const updateApplicationStatus = async (req: Request, res: Response, next:
         if (!token) {
             return res.status(401).json({ message: "Access token is missing or invalid" });
         }
-        // console.log('jobId:', jobId);
+
         const recruiterRepository = getRepository(User);
         const recruiter = await recruiterRepository.findOne({
             where: {
                 jobs: jobId
             }
         });
-        // console.log('recruiter:', recruiter);
 
         if (!recruiter) {
             return res.status(403).json({ message: "Recruiter is not authorized for this job" });
         }
+
         // Orquestación con Axios - Notificar al servidor de Mongoose
         const response = await axios.put('http://localhost:3000/user/application/status', {
             jobId,
             userId,
             newStatus
         });
-        // console.log("Axios response:", response.data);
+
         return res.status(200).json({
             message: "Application status updated successfully",
             data: response.data

@@ -10,8 +10,8 @@ export class UserController {
     private authService: AuthService;
 
     constructor() {
-        this.userService = new UserService();  // Servicio de usuarios
-        this.authService = new AuthService();  // Servicio de autenticación
+        this.userService = new UserService();
+        this.authService = new AuthService();
     }
 
     // Registro de usuarios
@@ -29,10 +29,10 @@ export class UserController {
                 email: createUserDto.email,
                 username: createUserDto.username,
                 password: createUserDto.password,
-                image: createUserDto.image,
+                image: createUserDto.image ? [createUserDto.image] : undefined,
                 roles: ['recruiter']
             });
-            return res.status(201).json({ 
+            return res.status(201).json({
                 message: 'User registered successfully'
             });
 
@@ -54,12 +54,12 @@ export class UserController {
         try {
             const user = await this.userService.findUserByEmail(loginUserDto.email);
             if (!user) {
-                return res.status(400).json({ message: 'Invalid email !' });
+                return res.status(400).json({ message: 'Reclutador no encontrado' });
             }
 
             const isValidPassword = await this.userService.validatePassword(user, loginUserDto.password);
             if (!isValidPassword) {
-                return res.status(400).json({ message: 'Invalid password !' });
+                return res.status(400).json({ message: 'Invalid email or password' });
             }
 
             const token = this.authService.generateAccessToken(user);
@@ -71,7 +71,7 @@ export class UserController {
     }
 
     async getCurrentRecruiter(req: Request, res: Response, next: NextFunction) {
-        const email = (req as Request & { email: string }).email;  // Forzamos a TypeScript a reconocer `req.email`
+        const email = (req as Request & { email: string }).email;
 
         if (!email) {
             return res.status(400).json({ message: 'Email not found in token' });
