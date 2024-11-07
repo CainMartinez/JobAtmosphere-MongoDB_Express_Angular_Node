@@ -40,8 +40,8 @@ const JobSchema = mongoose.Schema({
         default: 0
     },
     recruiter: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Recruiter"
+        type: String,
+        default: ""
     },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -86,6 +86,7 @@ JobSchema.methods.toJobResponse = async function (user) {
 
     // return user;
     return {
+        id: this._id,
         slug: this.slug,
         name: this.name,
         salary: this.salary,
