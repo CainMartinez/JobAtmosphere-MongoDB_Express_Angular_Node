@@ -32,7 +32,7 @@ export class UserController {
                 email: createUserDto.email,
                 username: createUserDto.username,
                 password: createUserDto.password,
-                // image: createUserDto.image,
+                image: createUserDto.image,
                 roles: ['recruiter']
             });
             return res.status(201).json({

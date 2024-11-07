@@ -54,7 +54,7 @@ const JobSchema = mongoose.Schema({
         },
         status: {
             type: String,
-            enum: ["pending", "accepted", "rejected"], 
+            enum: ["pending", "accepted", "rejected"],
             default: "pending"
         }
     }],
@@ -62,7 +62,7 @@ const JobSchema = mongoose.Schema({
         type: Boolean,
         default: false
     }
-},{
+}, {
     collection: 'Jobs'
 });
 
@@ -97,7 +97,10 @@ JobSchema.methods.toJobResponse = async function (user) {
         images: this.images,
         favorited: user ? user.isFavorite(this._id) : false,
         favoritesCount: this.favoritesCount || 0,
-        comments: this.comments
+        comments: this.comments,
+        isActive: this.isActive,
+        application: this.application,
+        recruiter: this.recruiter
     };
 };
 
@@ -112,6 +115,7 @@ JobSchema.methods.toJobProfile = async function (user) {
         img: this.img,
         favorited: user ? user.isFavorite(this._id) : false,
         favoritesCount: this.favoritesCount || 0,
+        isActive: this.isActive,
     };
 };
 
