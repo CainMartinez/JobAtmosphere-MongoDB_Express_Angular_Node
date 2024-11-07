@@ -87,6 +87,7 @@ export class UserController {
                 return res.status(404).json({ message: 'User not found' });
             }
 
+            console.log('datos de user:', {user});
             return res.status(200).json({ user });
         } catch (error) {
             return res.status(500).json({ message: 'Error retrieving user profile' });
