@@ -60,4 +60,12 @@ router.get("/recruiter/job",
         next(error);
     }
 });
+
+router.post("/recruiter/update", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await userController.updateRecruiter(req, res, next);
+    } catch (error) {
+        next(error);
+    }
+});
 export default router;
