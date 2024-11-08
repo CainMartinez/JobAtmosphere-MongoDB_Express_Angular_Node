@@ -32,4 +32,6 @@ module.exports = (app) => {
 
     // Follow Company
     app.post("/user/follow", verifyJWT, followCompany);
+
+    app.get("/user/:id", userController.getUserById);
 };

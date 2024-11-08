@@ -39,6 +39,21 @@ const registerUser = asyncHandler(async (req, res) => {
         });
     }
 });
+const getUserById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const user = await User
+        .findById(id)
+        .exec();
+
+    if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({
+        user: user,
+    });
+});
 
 const userLogin = asyncHandler(async (req, res) => {
     const { user } = req.body;
@@ -144,4 +159,5 @@ module.exports = {
     userLogin,
     updateUser,
     getUserProfile,
+    getUserById,
 };
