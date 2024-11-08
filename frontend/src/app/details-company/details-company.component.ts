@@ -17,6 +17,7 @@ export class DetailsCompanyComponent implements OnInit {
   company!: Company;
   name!: string | null;
   selectedComment: Comment | null = null;
+  isFollowing: boolean = false; // Nueva propiedad
 
   constructor(
     private JobService: JobService,
@@ -26,11 +27,11 @@ export class DetailsCompanyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("This is the company name", this.ActivatedRoute.snapshot.paramMap.get('name'));
+    // console.log("This is the company name", this.ActivatedRoute.snapshot.paramMap.get('name'));
     this.name = this.ActivatedRoute.snapshot.paramMap.get('name');
     if (this.name) {
       const companyName = this.convertUrlToCompanyName(this.name);
-      console.log("Company Name", companyName);
+      // console.log("Company Name", companyName);
       this.getCompany(companyName);
     }
   }
@@ -39,7 +40,7 @@ export class DetailsCompanyComponent implements OnInit {
     this.CompanyService.getCompanyByName(companyName).subscribe(
       (data: any) => {
         this.company = data;
-        console.log(this.company);
+        // console.log(this.company);
       },
       (error: any) => {
         console.error('Error fetching company data', error);
@@ -52,19 +53,11 @@ export class DetailsCompanyComponent implements OnInit {
     return url.replace(/-/g, ' ');
   }
 
-  onClickFollow() {
+  onToggleFollow() {
     const companyId = this.company.id;
     this.CompanyService.follow(companyId).subscribe(
       (data: any) => {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Empresa seguida!',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          window.location.reload();
-        });
-
+        this.isFollowing = !this.isFollowing;
       },
       (error: any) => {
         console.error('Error following company', error);

@@ -15,6 +15,7 @@ export class DetailsComponent implements OnInit {
   job!: Job;
   slug!: string | null;
   selectedComment: Comment | null = null;
+  isApplying: boolean = false; // Nueva propiedad
 
   constructor(
     private JobService: JobService,
@@ -25,7 +26,7 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.slug = this.ActivatedRoute.snapshot.paramMap.get('slug');
-    console.log(this.slug);
+    // console.log(this.slug);
     this.get_job();
   }
 
@@ -33,20 +34,21 @@ export class DetailsComponent implements OnInit {
     if (typeof this.slug === 'string') {
       this.JobService.get_job(this.slug).subscribe((data: any) => {
         this.job = data.jobs;
-        console.log(this.job);
+        // console.log(this.job);
       });
     } else {
-      console.log('fallo al encontrar el job');
+      // console.log('fallo al encontrar el job');
       this.router.navigate(['/']);
     }
   }
 
   applyForJob() {
-    console.log('Applying for job', this.job.id);
+    // console.log('Applying for job', this.job.id);
     if (this.job && this.job.id) {
+      this.isApplying = true;
       this.UserService.applyForJob(this.job.id).subscribe(
         (response) => {
-          console.log('Application successful', response);
+          // console.log('Application successful', response);
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -60,6 +62,7 @@ export class DetailsComponent implements OnInit {
             title: 'Error',
             text: error.message || 'An error occurred while applying for the job.',
           });
+          this.isApplying = false;
         }
       );
     }

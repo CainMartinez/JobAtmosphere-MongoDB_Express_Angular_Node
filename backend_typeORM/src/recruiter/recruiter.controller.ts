@@ -36,7 +36,8 @@ export class UserController {
                 password: createUserDto.password,
                 image: createUserDto.image,
                 roles: ['recruiter'],
-                busy: false
+                busy: false,
+                jobs: []
             });
             return res.status(201).json({
                 message: 'User registered successfully'
@@ -90,7 +91,7 @@ export class UserController {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            console.log('datos de user:', {user});
+            // console.log('datos de user:', {user});
             return res.status(200).json({ user });
         } catch (error) {
             return res.status(500).json({ message: 'Error retrieving user profile' });
